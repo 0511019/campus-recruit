@@ -42,6 +42,21 @@
         </div>
     </div>
 
+    <!-- 智能录入 -->
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl card-shadow p-5 mb-6 border-2 border-blue-200">
+        <h2 class="font-semibold text-lg mb-3">🤖 智能录入 —— 粘贴链接自动提取</h2>
+        <p class="text-xs text-gray-500 mb-3">把高校就业网的招聘会详情页链接粘贴进来，自动提取标题、时间、报名方式等信息</p>
+        <div class="flex gap-3">
+            <input id="smartUrl" type="url" placeholder="https://scdc.jnu.edu.cn/jobfair/view/id/51827"
+                   class="flex-1 px-4 py-3 border border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            <button onclick="smartExtract()" id="smartBtn"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm shrink-0">
+                🔍 智能提取
+            </button>
+        </div>
+        <div id="smartStatus" class="mt-3 text-sm hidden"></div>
+    </div>
+
     <!-- 添加活动 -->
     <div class="bg-white rounded-xl card-shadow p-5 mb-6">
         <h2 class="font-semibold text-lg mb-4" id="formTitle">➕ 新增招聘活动</h2>
@@ -261,6 +276,135 @@ function deleteActivity(i) {
     if (!confirm('确认删除"' + activities[i].title.slice(0, 50) + '"?')) return;
     activities.splice(i, 1);
     render();
+}
+
+// ====== 智能提取 ======
+async function smartExtract() {
+    const url = document.getElementById('smartUrl').value.trim();
+    if (!url) return alert('请粘贴活动详情页链接');
+
+    const status = document.getElementById('smartStatus');
+    const btn = document.getElementById('smartBtn');
+    status.classList.remove('hidden');
+    status.className = 'mt-3 text-sm text-blue-600';
+    status.textContent = '⏳ 正在抓取页面内容...';
+    btn.disabled = true;
+
+    try {
+        // 通过 CORS 代理获取页面
+        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+        const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(15000) });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const html = await resp.text();
+
+        status.textContent = '🔍 正在分析页面内容...';
+
+        // 提取纯文本
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        const text = (div.textContent || '').replace(/\s+/g, ' ');
+
+        // 提取标题
+        let title = '';
+        const titleEl = div.querySelector('h1, h2, h3, .title, .bt');
+        if (titleEl) title = titleEl.textContent.trim();
+        if (!title) {
+            const m = html.match(/<title>([^<]+)<\/title>/i);
+            if (m) title = m[1].replace(/[-|_].*/, '').trim();
+        }
+
+        // 提取各种信息
+        const info = { title, text };
+
+        // 日期
+        const dates = text.match(/(\d{4}[-/]\d{2}[-/]\d{2})/g) || [];
+        const cleanDates = dates.map(d => d.replace(/\//g, '-'));
+
+        // 覆盖高校
+        const uniPattern = /(中山大学|华南理工大学|暨南大学|华南师范大学|广东工业大学|深圳大学|华南农业大学|广东外语外贸大学|广州大学|南方科技大学|汕头大学|广东财经大学|广东海洋大学|南方医科大学|广州中医药大学|清华大学|北京大学|浙江大学|复旦大学|上海交通大学|武汉大学|华中科技大学|广西大学|中南大学|湖南大学|四川大学|重庆大学|北京理工大学)/g;
+        const unis = [...new Set(text.match(uniPattern) || [])];
+
+        // 届数
+        const years = [...new Set((text.match(/(\d{4})届/g) || []).map(y => y))];
+
+        // 活动类型
+        let atype = '线下双选会';
+        if (/空中|线上|网络/.test(text)) atype = text.includes('宣讲') ? '宣讲会' : '空中双选会';
+        else if (/宣讲/.test(text)) atype = '宣讲会';
+        else if (/供需见面/.test(text)) atype = '供需见面会';
+        else if (/实习/.test(text)) atype = '实习专招会';
+        else if (/网络招聘/.test(text)) atype = '网络招聘会';
+        else if (/双选/.test(text)) atype = '线下双选会';
+
+        // 形式
+        let format = 'offline';
+        if (/线上|空中|网络/.test(text) && /线下|现场|地点/.test(text)) format = 'hybrid';
+        else if (/线上|空中|网络/.test(text)) format = 'online';
+
+        // 地点/平台
+        let platform = '', location = '';
+        const locM = text.match(/(?:地点|地址|举办地点|场地)[：:]\s*(.+?)(?:[；;]|\s{2,}|$)/);
+        if (locM) location = locM[1].trim().slice(0, 80);
+        const platM = text.match(/(?:平台)[：:]\s*(.+?)(?:[；;]|\s{2,}|$)/);
+        if (platM) platform = platM[1].trim().slice(0, 50);
+
+        // 报名链接
+        let regUrl = '';
+        const regLinks = div.querySelectorAll('a[href*="zhaopin.com"], a[href*="cct."], a[href*="报名"], a[href*="register"]');
+        for (const rl of regLinks) {
+            const h = rl.getAttribute('href') || '';
+            if (/https?:/.test(h)) { regUrl = h; break; }
+        }
+        if (!regUrl) regUrl = url;
+
+        // 提取报名截止
+        let deadline = cleanDates[cleanDates.length - 1] || '';
+        const dlM = text.match(/(?:报名截止|截止时间|截止日期)[：:]*\s*(\d{4}[-/]\d{2}[-/]\d{2})/);
+        if (dlM) deadline = dlM[1].replace(/\//g, '-');
+
+        // 提取来源学校名
+        const srcMatch = url.match(/([a-z]+)\.(edu\.cn)/);
+        let srcName = '高校就业网';
+        const uniMap = {
+            'scdc': '暨南大学', 'career.sysu': '中山大学', 'career.scut': '华南理工大学',
+            'career.scnu': '华南师范大学', 'career.gdut': '广东工业大学', 'career.szu': '深圳大学',
+            'jyzx.scau': '华南农业大学', 'career.gdufs': '广东外语外贸大学',
+        };
+        for (const [k, v] of Object.entries(uniMap)) {
+            if (url.includes(k)) { srcName = v; break; }
+        }
+
+        // 填充表单
+        document.getElementById('fTitle').value = title || '';
+        document.getElementById('fRegion').value = '广东';
+        document.getElementById('fYears').value = years.join(',') || new Date().getFullYear() + '届';
+        document.getElementById('fType').value = atype;
+        document.getElementById('fFormat').value = format;
+        document.getElementById('fUniversities').value = unis.join(',');
+        document.getElementById('fPlatform').value = platform || location || '';
+        document.getElementById('fStartDate').value = cleanDates[0] || '';
+        document.getElementById('fEndDate').value = cleanDates.length > 1 ? cleanDates[cleanDates.length - 1] : (cleanDates[0] || '');
+        document.getElementById('fDeadline').value = deadline;
+        document.getElementById('fRegUrl').value = regUrl;
+        document.getElementById('fSourceTitle').value = srcName + '-详情';
+        document.getElementById('fSourceUrl').value = url;
+
+        // 构建提取摘要
+        const summary = [];
+        if (title) summary.push(`标题：${title.slice(0, 60)}`);
+        if (cleanDates.length) summary.push(`日期：${cleanDates.join(' ~ ')}`);
+        if (unis.length) summary.push(`高校：${unis.slice(0,5).join('、')}`);
+        if (atype) summary.push(`类型：${atype}`);
+        if (platform || location) summary.push(`地点：${platform || location}`);
+
+        status.className = 'mt-3 text-sm text-green-600';
+        status.innerHTML = '✅ 提取成功！表单已自动填充，请核对后点击保存。<br>' +
+            '<span class="text-xs text-gray-500">' + summary.join(' | ') + '</span>';
+    } catch (e) {
+        status.className = 'mt-3 text-sm text-red-500';
+        status.textContent = '❌ 抓取失败: ' + e.message + '。请手动填写表单。';
+    }
+    btn.disabled = false;
 }
 
 function downloadJSON() {
