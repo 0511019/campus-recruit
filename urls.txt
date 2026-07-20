@@ -1,0 +1,21 @@
+# 校招瞭望台 - 高校招聘会详情页URL列表
+# 每行一个链接，#开头为注释
+# 爬虫会逐个访问并自动提取信息
+
+# === 广东工业大学 ===
+https://career.gdut.edu.cn/jobfair/view/id/51375
+https://career.gdut.edu.cn/jobfair/view/id/51378
+https://career.gdut.edu.cn/jobfair/view/id/51369
+https://career.gdut.edu.cn/jobfair/view/id/51366
+https://career.gdut.edu.cn/jobfair/view/id/51379
+
+# === 中山大学 ===
+https://career.sysu.edu.cn/largefairs/view/id/6613/domain/sysu
+https://career.sysu.edu.cn/largefairs/view/id/6604/domain/sysu
+https://career.sysu.edu.cn/largefairs/view/id/6602/domain/sysu
+https://career.sysu.edu.cn/largefairs/view/id/6611/domain/sysu
+
+# === 暨南大学 ===
+https://scdc.jnu.edu.cn/jobfair/view/id/51827
+https://scdc.jnu.edu.cn/jobfair/view/id/51812
+https://scdc.jnu.edu.cn/jobfair/view/id/51820

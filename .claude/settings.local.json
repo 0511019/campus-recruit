@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start http://localhost:3000)",
+      "Bash(curl -s \"http://localhost:3000/data.json\")",
+      "WebFetch(domain:scdc.jnu.edu.cn)",
+      "WebFetch(domain:career.scut.edu.cn)",
+      "Bash(curl -s \"https://api.github.com/repos/0511019/campus-recruit/actions/runs?per_page=1\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/0511019/campus-recruit/main/data.json\")",
+      "Bash(node -e \"const d=require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\);const j=JSON.parse\\(d\\);console.log\\('总数:',j.length\\);j.forEach\\(a=>console.log\\(a.id.slice\\(0,8\\),a.title.slice\\(0,50\\)\\)\\)\")"
+    ]
+  }
+}

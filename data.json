@@ -1,110 +1,178 @@
 [
   {
-    "id": "act-001",
-    "title": "\"就\"在南粤·\"职\"通未来——广东省高校联合2026届毕业生暨2027届实习生空中双选会",
-    "targetAudience": "regional",
+    "id": "auto-e57054d93aab",
+    "title": "“机聚英才 自创未来” 2026届毕业生春季招聘会",
+    "targetAudience": "university",
     "region": [
       "广东"
     ],
     "universities": [
-      "中山大学",
-      "华南理工大学",
-      "暨南大学",
-      "深圳大学",
-      "华南师范大学",
-      "华南农业大学",
       "广东工业大学",
-      "广东外语外贸大学",
-      "广州大学",
-      "南方科技大学",
-      "汕头大学",
-      "广东财经大学",
-      "广东海洋大学",
-      "南方医科大学",
-      "广州中医药大学",
-      "广州美术学院",
-      "广东医科大学",
-      "东莞理工学院",
-      "佛山科学技术学院",
-      "惠州学院",
-      "深圳技术大学",
-      "北京理工大学珠海学院",
-      "等41所高校"
+      "广州大学"
+    ],
+    "graduateYears": [
+      "2026届"
+    ],
+    "activityType": "线下双选会",
+    "format": "offline",
+    "platform": null,
+    "location": "广东工业大学大学城校区工学二号馆西门连廊 详情 ☎ 电话 大学城校区：020-39325251（用人单位校园宣讲）、020-39322618（用人单位校园招聘） 大学城校区：020-39322471（",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-04-10",
+    "activityEndDate": "2026-04-23",
+    "registrationDeadline": "2026-04-23",
+    "enterpriseRegUrl": "https://career.gdut.edu.cn/jobfair/view/id/51375",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "广东工业大学就业网-详情",
+        "url": "https://career.gdut.edu.cn/jobfair/view/id/51375"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-07-20"
+  },
+  {
+    "id": "auto-67ead36e1000",
+    "title": "2026届毕业生春季（综合类）校园双选会",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "广东工业大学",
+      "广州大学"
+    ],
+    "graduateYears": [
+      "2026届"
+    ],
+    "activityType": "宣讲会",
+    "format": "offline",
+    "platform": null,
+    "location": "大学城校区图书馆架空层 详情 ☎ 电话 大学城校区：020-39325251（用人单位校园宣讲）、020-39322618（用人单位校园招聘） 大学城校区：020-39322471（学生就业事务咨询）",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-04-22",
+    "activityEndDate": "2026-05-19",
+    "registrationDeadline": "2026-05-19",
+    "enterpriseRegUrl": "https://career.gdut.edu.cn/jobfair/view/id/51378",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "广东工业大学就业网-详情",
+        "url": "https://career.gdut.edu.cn/jobfair/view/id/51378"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-07-20"
+  },
+  {
+    "id": "auto-38632ced4dd5",
+    "title": "“春启新程，才聚羊城”广东工业大学2026届毕业生春季(综合类)校园双选会",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "广东工业大学",
+      "广州大学"
+    ],
+    "graduateYears": [
+      "2026届"
+    ],
+    "activityType": "线下双选会",
+    "format": "offline",
+    "platform": null,
+    "location": "大学城校区图书馆架空层 详情 ☎ 电话 大学城校区：020-39325251（用人单位校园宣讲）、020-39322618（用人单位校园招聘） 大学城校区：020-39322471（学生就业事务咨询）",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-03-10",
+    "activityEndDate": "2026-03-28",
+    "registrationDeadline": "2026-03-28",
+    "enterpriseRegUrl": "https://career.gdut.edu.cn/jobfair/view/id/51369",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "广东工业大学就业网-详情",
+        "url": "https://career.gdut.edu.cn/jobfair/view/id/51369"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-07-20"
+  },
+  {
+    "id": "auto-3e86f14f67ca",
+    "title": "“青衿致远·职映星河” 广东工业大学2026届毕业生春季（综合类）校园招聘会",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "广东工业大学",
+      "广州大学"
+    ],
+    "graduateYears": [
+      "2026届"
+    ],
+    "activityType": "线下双选会",
+    "format": "offline",
+    "platform": null,
+    "location": "大学城校区图书馆架空层 详情 ☎ 电话 大学城校区：020-39325251（用人单位校园宣讲）、020-39322618（用人单位校园招聘） 大学城校区：020-39322471（学生就业事务咨询）",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-03-14",
+    "activityEndDate": "2026-04-10",
+    "registrationDeadline": "2026-04-10",
+    "enterpriseRegUrl": "https://career.gdut.edu.cn/jobfair/view/id/51366",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "广东工业大学就业网-详情",
+        "url": "https://career.gdut.edu.cn/jobfair/view/id/51366"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-07-20"
+  },
+  {
+    "id": "auto-75c7592250d8",
+    "title": "“就”在南粤，“职”通未来 广东省高校联合2026届毕业生暨2027届实习生空中双选会邀请函",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届",
       "2027届"
     ],
     "activityType": "空中双选会",
-    "format": "online",
-    "platform": "智联招聘",
-    "location": null,
+    "format": "hybrid",
+    "platform": "",
+    "location": "网络招聘会，在线投递简历 详情 ☎ 电话 大学城校区：020-39325251（用人单位校园宣讲）、020-39322618（用人单位校园招聘） 大学城校区：020-39322471（学生就业事务咨询",
     "status": "ongoing",
     "registrationStatus": "open",
-    "activityStartDate": "2026-06-01",
+    "activityStartDate": "2026-06-02",
     "activityEndDate": "2026-07-31",
     "registrationDeadline": "2026-07-31",
-    "enterpriseRegUrl": "https://cct.zhaopin.com/jobfair/jobfairDetails/18691",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
+    "enterpriseRegUrl": "https://career.gdut.edu.cn/jobfair/view/id/51379",
+    "enterpriseRegMethod": "线上报名",
     "sourceLinks": [
       {
-        "title": "暨南大学就业网-邀请函",
-        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51827"
-      },
-      {
-        "title": "深圳技术大学就业网-邀请函",
-        "url": "https://jyzd.sztu.edu.cn/info/1013/1617.htm"
-      },
-      {
-        "title": "北理工珠海学院-邀请函",
-        "url": "https://job.bitzh.edu.cn/unijob/web/index/notice-detail?id=2740"
+        "title": "广东工业大学就业网-详情",
+        "url": "https://career.gdut.edu.cn/jobfair/view/id/51379"
       }
     ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.369Z",
-    "updatedAt": "2026-07-20T07:18:28.369Z"
+    "isVerified": true,
+    "createdAt": "2026-07-20"
   },
   {
-    "id": "act-002",
-    "title": "华南理工大学2027届毕业生秋季综合类双选会",
-    "targetAudience": "university",
-    "region": [
-      "广东"
-    ],
-    "universities": [
-      "华南理工大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "线下双选会",
-    "format": "offline",
-    "platform": null,
-    "location": "华南理工大学五山校区海丽文体中心",
-    "status": "preview",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-09-20",
-    "activityEndDate": "2026-09-20",
-    "registrationDeadline": "2026-09-10",
-    "enterpriseRegUrl": "https://career.scut.edu.cn/jobfair/12345",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "华南理工大学就业在线",
-        "url": "https://career.scut.edu.cn/jobfair/view/id/12345"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.375Z",
-    "updatedAt": "2026-07-20T07:18:28.375Z"
-  },
-  {
-    "id": "act-003",
-    "title": "中山大学2027届毕业生秋季校园宣讲会——互联网专场",
+    "id": "auto-307c0563d39b",
+    "title": "2026届毕业生就业暨2027届暑期实习线上招聘会",
     "targetAudience": "university",
     "region": [
       "广东"
@@ -113,34 +181,32 @@
       "中山大学"
     ],
     "graduateYears": [
+      "2026届",
       "2027届"
     ],
-    "activityType": "宣讲会",
-    "format": "offline",
-    "platform": null,
-    "location": "中山大学广州校区南校园",
-    "status": "preview",
+    "activityType": "网络招聘会",
+    "format": "hybrid",
+    "platform": "",
+    "location": "网络招聘会，在线投递简历 主办单位：中山大学党委学生工作部 2026届毕业生就业暨2027届暑期实习线上招聘会 12个 参会企业 343个 招聘人数 36个 可投职位 7921个 关注人次 学生报名参",
+    "status": "ongoing",
     "registrationStatus": "open",
-    "activityStartDate": "2026-09-15",
-    "activityEndDate": "2026-09-15",
-    "registrationDeadline": "2026-09-01",
-    "enterpriseRegUrl": "https://career.sysu.edu.cn/jobfair/67890",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
+    "activityStartDate": "2026-06-22",
+    "activityEndDate": "2026-09-10",
+    "registrationDeadline": "2026-09-10",
+    "enterpriseRegUrl": "https://career.sysu.edu.cn/largefairs/view/id/6613/domain/sysu",
+    "enterpriseRegMethod": "线上报名",
     "sourceLinks": [
       {
-        "title": "中山大学学生就业指导中心",
-        "url": "https://career.sysu.edu.cn/jobfair/view/id/67890"
+        "title": "中山大学就业网-详情",
+        "url": "https://career.sysu.edu.cn/largefairs/view/id/6613/domain/sysu"
       }
     ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.381Z",
-    "updatedAt": "2026-07-20T07:18:28.381Z"
+    "isVerified": true,
+    "createdAt": "2026-07-20"
   },
   {
-    "id": "act-004",
-    "title": "暨南大学2027届实习生专场网络招聘会",
+    "id": "auto-40aebd0acc48",
+    "title": "【邀请函】“就”在南粤，“职”通未来  广东省高校联合2026届毕业生暨2027届实习生空中双选会",
     "targetAudience": "university",
     "region": [
       "广东"
@@ -149,452 +215,93 @@
       "暨南大学"
     ],
     "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "网络招聘会",
-    "format": "online",
-    "platform": "智联招聘",
-    "location": null,
-    "status": "ongoing",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-07-10",
-    "activityEndDate": "2026-08-31",
-    "registrationDeadline": "2026-08-15",
-    "enterpriseRegUrl": "https://www.zhaopin.com/jobfair/98765",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "暨南大学学生就业指导中心",
-        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51828"
-      }
-    ],
-    "isVerified": 0,
-    "createdAt": "2026-07-20T07:18:28.386Z",
-    "updatedAt": "2026-07-20T07:18:28.386Z"
-  },
-  {
-    "id": "act-005",
-    "title": "深圳大学2027届毕业生夏季实习专招会",
-    "targetAudience": "university",
-    "region": [
-      "广东"
-    ],
-    "universities": [
-      "深圳大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "实习专招会",
-    "format": "offline",
-    "platform": null,
-    "location": "深圳大学粤海校区",
-    "status": "ongoing",
-    "registrationStatus": "closed",
-    "activityStartDate": "2026-07-20",
-    "activityEndDate": "2026-07-20",
-    "registrationDeadline": "2026-07-18",
-    "enterpriseRegUrl": "https://career.szu.edu.cn/jobfair/11111",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "深圳大学就业指导中心",
-        "url": "https://career.szu.edu.cn/jobfair/view/id/11111"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.390Z",
-    "updatedAt": "2026-07-20T07:18:28.390Z"
-  },
-  {
-    "id": "act-006",
-    "title": "广东省2027届高校毕业生供需见面会——理工类专场",
-    "targetAudience": "regional",
-    "region": [
-      "广东"
-    ],
-    "universities": [
-      "广东工业大学",
-      "华南理工大学",
-      "广州大学",
-      "东莞理工学院",
-      "佛山科学技术学院",
-      "深圳技术大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "供需见面会",
-    "format": "offline",
-    "platform": null,
-    "location": "广东工业大学大学城校区",
-    "status": "preview",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-10-15",
-    "activityEndDate": "2026-10-15",
-    "registrationDeadline": "2026-10-01",
-    "enterpriseRegUrl": "https://career.gdut.edu.cn/jobfair/22222",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "广东工业大学就业信息网",
-        "url": "https://career.gdut.edu.cn/jobfair/view/id/22222"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.396Z",
-    "updatedAt": "2026-07-20T07:18:28.396Z"
-  },
-  {
-    "id": "act-007",
-    "title": "华南师范大学2027届毕业生教育类空中双选会",
-    "targetAudience": "university",
-    "region": [
-      "广东"
-    ],
-    "universities": [
-      "华南师范大学"
-    ],
-    "graduateYears": [
+      "2026届",
       "2027届"
     ],
     "activityType": "空中双选会",
-    "format": "online",
-    "platform": "腾讯会议+学校就业平台",
-    "location": null,
-    "status": "preview",
+    "format": "hybrid",
+    "platform": "",
+    "location": "网络招聘会，在线投递简历 详情 暨大就业 暨南大学学生就业指导中心 暨南大学学生就业指导中心",
+    "status": "ongoing",
     "registrationStatus": "open",
-    "activityStartDate": "2026-08-01",
-    "activityEndDate": "2026-08-15",
-    "registrationDeadline": "2026-07-28",
-    "enterpriseRegUrl": "https://career.scnu.edu.cn/jobfair/33333",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
+    "activityStartDate": "2026-06-05",
+    "activityEndDate": "2026-07-31",
+    "registrationDeadline": "2026-07-31",
+    "enterpriseRegUrl": "https://scdc.jnu.edu.cn/jobfair/view/id/51827",
+    "enterpriseRegMethod": "线上报名",
     "sourceLinks": [
       {
-        "title": "华南师范大学就业导航",
-        "url": "https://career.scnu.edu.cn/jobfair/view/id/33333"
+        "title": "暨南大学就业网-详情",
+        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51827"
       }
     ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.401Z",
-    "updatedAt": "2026-07-20T07:18:28.401Z"
+    "isVerified": true,
+    "createdAt": "2026-07-20"
   },
   {
-    "id": "act-008",
-    "title": "广西大学2027届毕业生秋季双选会",
+    "id": "auto-900d82eb2ccc",
+    "title": "“逐梦湾区・职通山海”暨南大学2026届毕业生春季（综合类）校园双选会——番禺校区专场",
     "targetAudience": "university",
     "region": [
-      "广西"
+      "广东"
     ],
     "universities": [
-      "广西大学"
+      "暨南大学"
     ],
     "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "线下双选会",
-    "format": "offline",
-    "platform": null,
-    "location": "广西大学西校园篮球场",
-    "status": "preview",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-10-20",
-    "activityEndDate": "2026-10-20",
-    "registrationDeadline": "2026-10-10",
-    "enterpriseRegUrl": "https://career.gxu.edu.cn/jobfair/44444",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "广西大学就业信息网",
-        "url": "https://career.gxu.edu.cn/jobfair/view/id/44444"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.405Z",
-    "updatedAt": "2026-07-20T07:18:28.405Z"
-  },
-  {
-    "id": "act-009",
-    "title": "华中科技大学2027届毕业生IT类专场宣讲会",
-    "targetAudience": "university",
-    "region": [
-      "湖北"
-    ],
-    "universities": [
-      "华中科技大学"
-    ],
-    "graduateYears": [
-      "2027届"
+      "2026届"
     ],
     "activityType": "宣讲会",
-    "format": "hybrid",
-    "platform": "腾讯会议",
-    "location": "华中科技大学大学生活动中心 + 线上同步",
-    "status": "preview",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-09-05",
-    "activityEndDate": "2026-09-05",
-    "registrationDeadline": "2026-08-25",
-    "enterpriseRegUrl": "https://career.hust.edu.cn/jobfair/55555",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
+    "format": "offline",
+    "platform": null,
+    "location": "暨南大学番禺校区T1、T2宿舍楼架空层 详情 暨大就业 暨南大学学生就业指导中心 暨南大学学生就业指导中心",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-03-11",
+    "activityEndDate": "2026-03-13",
+    "registrationDeadline": "2026-03-13",
+    "enterpriseRegUrl": "https://scdc.jnu.edu.cn/jobfair/view/id/51812",
+    "enterpriseRegMethod": "线上报名",
     "sourceLinks": [
       {
-        "title": "华中科技大学就业信息网",
-        "url": "https://career.hust.edu.cn/jobfair/view/id/55555"
+        "title": "暨南大学就业网-详情",
+        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51812"
       }
     ],
-    "isVerified": 0,
-    "createdAt": "2026-07-20T07:18:28.409Z",
-    "updatedAt": "2026-07-20T07:18:28.409Z"
+    "isVerified": true,
+    "createdAt": "2026-07-20"
   },
   {
-    "id": "act-010",
-    "title": "湖南省高校联合2027届毕业生空中双选会",
-    "targetAudience": "regional",
-    "region": [
-      "湖南"
-    ],
-    "universities": [
-      "中南大学",
-      "湖南大学",
-      "湖南师范大学",
-      "湘潭大学",
-      "长沙理工大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "空中双选会",
-    "format": "online",
-    "platform": "智联招聘",
-    "location": null,
-    "status": "ongoing",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-07-01",
-    "activityEndDate": "2026-08-31",
-    "registrationDeadline": "2026-08-20",
-    "enterpriseRegUrl": "https://cct.zhaopin.com/jobfair/66666",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "中南大学就业信息网",
-        "url": "https://career.csu.edu.cn/jobfair/view/id/66666"
-      },
-      {
-        "title": "湖南大学招生与就业指导处",
-        "url": "https://career.hnu.edu.cn/jobfair/view/id/66667"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.415Z",
-    "updatedAt": "2026-07-20T07:18:28.415Z"
-  },
-  {
-    "id": "act-011",
-    "title": "南方科技大学2027届毕业生前沿科技专场双选会",
+    "id": "auto-ee17b4b20acd",
+    "title": "逐梦湾区·职通山海——暨南大学2026年春季校园双选会（番禺校区）理工、药学、化材、经管、语言类专场第二场",
     "targetAudience": "university",
     "region": [
       "广东"
     ],
     "universities": [
-      "南方科技大学"
+      "暨南大学"
     ],
     "graduateYears": [
-      "2027届"
+      "2026届"
     ],
-    "activityType": "线下双选会",
+    "activityType": "宣讲会",
     "format": "offline",
     "platform": null,
-    "location": "南方科技大学会议中心",
+    "location": "暨南大学番禺校区T2架空层 详情 暨大就业 暨南大学学生就业指导中心 暨南大学学生就业指导中心",
     "status": "ended",
     "registrationStatus": "closed",
-    "activityStartDate": "2026-06-15",
-    "activityEndDate": "2026-06-15",
-    "registrationDeadline": "2026-06-01",
-    "enterpriseRegUrl": "https://career.sustech.edu.cn/jobfair/77777",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
+    "activityStartDate": "2026-04-21",
+    "activityEndDate": "2026-04-23",
+    "registrationDeadline": "2026-04-23",
+    "enterpriseRegUrl": "https://scdc.jnu.edu.cn/jobfair/view/id/51820",
+    "enterpriseRegMethod": "线上报名",
     "sourceLinks": [
       {
-        "title": "南方科技大学就业信息网",
-        "url": "https://career.sustech.edu.cn/jobfair/view/id/77777"
+        "title": "暨南大学就业网-详情",
+        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51820"
       }
     ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.422Z",
-    "updatedAt": "2026-07-20T07:18:28.422Z"
-  },
-  {
-    "id": "act-012",
-    "title": "北京理工大学珠海学院2027届毕业生综合双选会",
-    "targetAudience": "university",
-    "region": [
-      "广东"
-    ],
-    "universities": [
-      "北京理工大学珠海学院"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "线下双选会",
-    "format": "offline",
-    "platform": null,
-    "location": "北京理工大学珠海学院体育馆",
-    "status": "preview",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-09-25",
-    "activityEndDate": "2026-09-25",
-    "registrationDeadline": "2026-09-15",
-    "enterpriseRegUrl": "https://job.bitzh.edu.cn/jobfair/88888",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "北理工珠海学院就业信息网",
-        "url": "https://job.bitzh.edu.cn/jobfair/view/id/88888"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.428Z",
-    "updatedAt": "2026-07-20T07:18:28.428Z"
-  },
-  {
-    "id": "act-013",
-    "title": "四川省高校联合2027届毕业生空中双选会——川渝专场",
-    "targetAudience": "regional",
-    "region": [
-      "四川",
-      "重庆"
-    ],
-    "universities": [
-      "四川大学",
-      "电子科技大学",
-      "西南交通大学",
-      "重庆大学",
-      "西南大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "空中双选会",
-    "format": "online",
-    "platform": "腾讯会议",
-    "location": null,
-    "status": "ongoing",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-07-15",
-    "activityEndDate": "2026-08-31",
-    "registrationDeadline": "2026-08-15",
-    "enterpriseRegUrl": "https://cct.zhaopin.com/jobfair/88888",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "四川大学就业指导中心",
-        "url": "https://jy.scu.edu.cn/jobfair/view/id/88888"
-      },
-      {
-        "title": "重庆大学毕业生就业信息网",
-        "url": "https://www.job.cqu.edu.cn/jobfair/view/id/88889"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.432Z",
-    "updatedAt": "2026-07-20T07:18:28.432Z"
-  },
-  {
-    "id": "act-014",
-    "title": "浙江大学2027届毕业生秋季综合招聘会",
-    "targetAudience": "university",
-    "region": [
-      "浙江"
-    ],
-    "universities": [
-      "浙江大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "线下双选会",
-    "format": "offline",
-    "platform": null,
-    "location": "浙江大学紫金港校区体育馆",
-    "status": "preview",
-    "registrationStatus": "open",
-    "activityStartDate": "2026-10-25",
-    "activityEndDate": "2026-10-25",
-    "registrationDeadline": "2026-10-10",
-    "enterpriseRegUrl": "https://www.career.zju.edu.cn/jobfair/77777",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "浙江大学就业指导与服务中心",
-        "url": "https://www.career.zju.edu.cn/jobfair/view/id/77777"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.436Z",
-    "updatedAt": "2026-07-20T07:18:28.436Z"
-  },
-  {
-    "id": "act-015",
-    "title": "北京市2027届高校毕业生春季联合双选会",
-    "targetAudience": "regional",
-    "region": [
-      "北京"
-    ],
-    "universities": [
-      "清华大学",
-      "北京大学",
-      "中国人民大学",
-      "北京航空航天大学",
-      "北京理工大学",
-      "北京师范大学"
-    ],
-    "graduateYears": [
-      "2027届"
-    ],
-    "activityType": "线下双选会",
-    "format": "offline",
-    "platform": null,
-    "location": "北京大学生就业之家",
-    "status": "ended",
-    "registrationStatus": "closed",
-    "activityStartDate": "2026-04-10",
-    "activityEndDate": "2026-04-10",
-    "registrationDeadline": "2026-03-25",
-    "enterpriseRegUrl": "https://www.bjbys.net.cn/jobfair/99999",
-    "enterpriseRegMethod": null,
-    "enterpriseContact": null,
-    "brief": null,
-    "sourceLinks": [
-      {
-        "title": "北京高校毕业生就业信息网",
-        "url": "https://www.bjbys.net.cn/jobfair/view/id/99999"
-      }
-    ],
-    "isVerified": 1,
-    "createdAt": "2026-07-20T07:18:28.440Z",
-    "updatedAt": "2026-07-20T07:18:28.440Z"
+    "isVerified": true,
+    "createdAt": "2026-07-20"
   }
 ]
