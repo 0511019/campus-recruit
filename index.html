@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校招瞭望台 — 高校招聘信息聚合平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe',
+                            500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .card-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06); }
+        .card-shadow:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .filter-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .filter-panel.open { max-height: 1200px; }
+        .tag-checkbox:checked + .tag-label {
+            background-color: #2563eb; color: #fff; border-color: #2563eb;
+        }
+        .tag-label { transition: all 0.2s ease; }
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #1e293b; color: #fff; padding: 12px 24px; border-radius: 8px;
+            font-size: 14px; z-index: 9999; opacity: 0; transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+        /* 省份网格滚动条 */
+        .province-grid::-webkit-scrollbar { width: 4px; }
+        .province-grid::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 2px; }
+        /* 登录弹窗 */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 9998;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+        }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: #fff; border-radius: 16px; width: 400px; max-width: 92vw;
+            padding: 28px 24px 24px; transform: translateY(12px);
+            transition: transform 0.25s ease;
+        }
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        /* 验证码倒计时 */
+        .sms-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        /* Tab 切换 */
+        .auth-tab {
+            flex: 1; text-align: center; padding: 10px 0; font-size: 15px;
+            font-weight: 500; color: #9ca3af; border-bottom: 2px solid transparent;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .auth-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+
+    <!-- ========== 顶部导航 ========== -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">🔔</span>
+                <span class="font-bold text-lg text-gray-900">校招瞭望台</span>
+            </div>
+            <nav class="flex items-center gap-1 text-sm">
+                <a href="#" class="px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">订阅管理</a>
+                <a href="#" class="px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
+                    收藏 <span class="text-xs text-gray-400">0</span>
+                </a>
+                <a href="#" class="px-3 py-2 rounded-lg bg-red-50 text-red-600 font-medium transition relative">
+                    通知
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                </a>
+                <!-- 未登录：登录按钮 -->
+                <button id="btnLogin" onclick="openAuthModal()"
+                        class="ml-2 px-4 py-1.5 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition font-medium">
+                    登录 / 注册
+                </button>
+                <!-- 已登录：用户头像+下拉 -->
+                <div id="userMenu" class="hidden relative ml-2">
+                    <button onclick="toggleUserDropdown()"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition">
+                        <span class="w-7 h-7 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xs font-bold">
+                            <span id="userAvatar">U</span>
+                        </span>
+                        <span id="userName" class="text-gray-700 text-sm max-w-[80px] truncate"></span>
+                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs"></i>
+                    </button>
+                    <div id="userDropdown" class="hidden absolute right-0 top-full mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                        <div class="px-3 py-2 text-xs text-gray-400 border-b border-gray-50">
+                            <span id="dropdownPhone"></span>
+                        </div>
+                        <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition">我的订阅</a>
+                        <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition">我的收藏</a>
+                        <hr class="border-gray-50">
+                        <button onclick="logout()" class="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-red-50 transition">退出登录</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========== 主体内容 ========== -->
+    <main class="max-w-6xl mx-auto px-4 py-6">
+        <!-- 搜索栏 -->
+        <div class="mb-4">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input id="searchInput" type="text"
+                    placeholder="输入关键词（高校名称 / 活动名称）..."
+                    class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
+            </div>
+        </div>
+
+        <!-- ========== 筛选面板 ========== -->
+        <div class="bg-white rounded-xl card-shadow mb-6 overflow-hidden">
+            <button id="filterToggle" class="w-full flex items-center justify-between px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-gray-400"></i> 筛选条件
+                </span>
+                <span class="flex items-center gap-2">
+                    <span id="filterBadge" class="bg-brand-500 text-white text-xs px-2 py-0.5 rounded-full hidden">0</span>
+                    <i id="filterChevron" class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform duration-300"></i>
+                </span>
+            </button>
+
+            <div id="filterPanel" class="filter-panel">
+                <div class="px-5 pb-5 space-y-5">
+
+                    <!-- 1. 区域（省）—— 全国34个省份 -->
+                    <div>
+                        <div class="text-xs text-gray-400 font-medium mb-2">区域（省）</div>
+                        <div id="regionFilters" class="province-grid grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-1.5 max-h-40 overflow-y-auto p-1">
+                            <!-- JS 动态渲染 -->
+                        </div>
+                    </div>
+
+                    <!-- 2. 届数 —— 动态范围（当前年份-2, 当前年份+2） -->
+                    <div>
+                        <div class="text-xs text-gray-400 font-medium mb-2">届数</div>
+                        <div class="flex flex-wrap gap-2" id="yearFilters">
+                            <!-- JS 动态渲染 -->
+                        </div>
+                    </div>
+
+                    <!-- 3. 活动形式（线上 / 线下 / 其他） -->
+                    <div>
+                        <div class="text-xs text-gray-400 font-medium mb-2">活动形式</div>
+                        <div class="flex flex-wrap gap-2" id="formatFilters">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="format" value="线上">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">线上</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="format" value="线下">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">线下</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="format" value="其他">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">其他</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. 细分类型（基于高校就业网实际分类） -->
+                    <div>
+                        <div class="text-xs text-gray-400 font-medium mb-2">细分类型</div>
+                        <div class="flex flex-wrap gap-2" id="subTypeFilters">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="subType" value="双选会">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">双选会</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="subType" value="宣讲会">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">宣讲会</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="subType" value="供需见面会">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">供需见面会</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="subType" value="网络招聘会">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">网络招聘会</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="subType" value="实习专招会">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">实习专招会</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 5. 活动状态（预告 / 进行中 / 已结束） -->
+                    <div>
+                        <div class="text-xs text-gray-400 font-medium mb-2">活动状态</div>
+                        <div class="flex flex-wrap gap-2" id="statusFilters">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="status" value="预告">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">预告</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="status" value="进行中">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">进行中</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="status" value="已结束">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">已结束</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 6. 报名状态（独立分栏） -->
+                    <div>
+                        <div class="text-xs text-gray-400 font-medium mb-2">报名状态</div>
+                        <div class="flex flex-wrap gap-2" id="regStatusFilters">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="regStatus" value="报名中">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">报名中</span>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="checkbox" class="tag-checkbox hidden" data-filter="regStatus" value="已截止">
+                                <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">已截止</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="flex gap-3 pt-2">
+                        <button id="applyFilterBtn" class="px-5 py-2 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition font-medium">
+                            <i class="fa-solid fa-magnifying-glass mr-1"></i> 搜索
+                        </button>
+                        <button id="resetFilterBtn" class="px-5 py-2 border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50 transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> 重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 结果区域 ========== -->
+        <div class="flex items-center justify-between mb-4">
+            <div class="text-sm text-gray-500">
+                共 <span id="resultCount" class="font-semibold text-gray-800">12</span> 条活动
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-400">排序：</span>
+                <select id="sortSelect" class="text-sm border border-gray-200 rounded-lg px-2 py-1 focus:outline-none focus:border-brand-500">
+                    <option value="deadline">报名截止时间 ↑</option>
+                    <option value="newest">最新发布</option>
+                    <option value="date">活动时间</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 活动卡片列表 -->
+        <div id="activityList" class="space-y-4"></div>
+
+        <!-- 空状态 -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <div class="text-5xl mb-4">📭</div>
+            <p class="text-gray-500 text-sm mb-2">暂未找到匹配活动</p>
+            <p class="text-gray-400 text-xs mb-4">建议放宽筛选条件或设置订阅提醒</p>
+            <button class="px-4 py-2 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition">
+                <i class="fa-solid fa-bell mr-1"></i> 设置订阅提醒
+            </button>
+        </div>
+
+        <!-- 加载更多 -->
+        <div id="loadMore" class="text-center mt-6">
+            <button class="px-6 py-2.5 border border-gray-200 text-gray-600 text-sm rounded-xl hover:bg-gray-50 transition">
+                加载更多 <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- ========== 登录/注册弹窗 ========== -->
+    <div id="authModal" class="modal-overlay" onclick="closeAuthModalOutside(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <!-- 关闭按钮 -->
+            <div class="flex justify-end mb-2">
+                <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+            </div>
+
+            <!-- Tab 切换 -->
+            <div class="flex border-b border-gray-200 mb-5">
+                <div id="tabLogin" class="auth-tab active" onclick="switchAuthTab('login')">
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i> 登录
+                </div>
+                <div id="tabRegister" class="auth-tab" onclick="switchAuthTab('register')">
+                    <i class="fa-solid fa-user-plus mr-1"></i> 注册
+                </div>
+            </div>
+
+            <!-- ====== 登录表单 ====== -->
+            <form id="loginForm" class="space-y-4" onsubmit="handleLogin(event)">
+                <!-- 手机号登录 -->
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">手机号</label>
+                    <div class="flex gap-2">
+                        <input id="loginPhone" type="tel" maxlength="11" placeholder="请输入11位手机号"
+                               class="flex-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">验证码</label>
+                    <div class="flex gap-2">
+                        <input id="loginSmsCode" type="text" maxlength="4" placeholder="4位验证码"
+                               class="flex-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                        <button type="button" id="loginSmsBtn" onclick="sendSms('login')"
+                                class="sms-btn px-4 py-2.5 bg-gray-100 text-gray-600 text-xs rounded-lg hover:bg-gray-200 transition font-medium shrink-0">
+                            获取验证码
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">演示环境：任意4位数字即可登录</p>
+                </div>
+
+                <!-- 分隔线 -->
+                <div class="flex items-center gap-3">
+                    <hr class="flex-1 border-gray-100">
+                    <span class="text-xs text-gray-400">或用微信号登录</span>
+                    <hr class="flex-1 border-gray-100">
+                </div>
+
+                <!-- 微信号登录 -->
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">微信号</label>
+                    <input id="loginWechat" type="text" placeholder="请输入微信号"
+                           class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">密码</label>
+                    <input id="loginWechatPwd" type="password" placeholder="请输入密码"
+                           class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition font-medium">
+                    登录
+                </button>
+            </form>
+
+            <!-- ====== 注册表单 ====== -->
+            <form id="registerForm" class="space-y-4 hidden" onsubmit="handleRegister(event)">
+                <!-- 手机号注册 -->
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">手机号</label>
+                    <input id="regPhone" type="tel" maxlength="11" placeholder="请输入11位手机号"
+                           class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">验证码</label>
+                    <div class="flex gap-2">
+                        <input id="regSmsCode" type="text" maxlength="4" placeholder="4位验证码"
+                               class="flex-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                        <button type="button" id="regSmsBtn" onclick="sendSms('register')"
+                                class="sms-btn px-4 py-2.5 bg-gray-100 text-gray-600 text-xs rounded-lg hover:bg-gray-200 transition font-medium shrink-0">
+                            获取验证码
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">演示环境：任意4位数字即可注册</p>
+                </div>
+
+                <!-- 分隔线 -->
+                <div class="flex items-center gap-3">
+                    <hr class="flex-1 border-gray-100">
+                    <span class="text-xs text-gray-400">或用微信号注册</span>
+                    <hr class="flex-1 border-gray-100">
+                </div>
+
+                <!-- 微信号注册 -->
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">微信号</label>
+                    <input id="regWechat" type="text" placeholder="请输入微信号"
+                           class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">设置密码</label>
+                    <input id="regWechatPwd" type="password" placeholder="6-16位密码"
+                           class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">确认密码</label>
+                    <input id="regWechatPwd2" type="password" placeholder="再次输入密码"
+                           class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition font-medium">
+                    注册
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+    // ==================== 全国34个省级行政区 ====================
+    const ALL_PROVINCES = [
+        '北京','天津','河北','山西','内蒙古',
+        '辽宁','吉林','黑龙江',
+        '上海','江苏','浙江','安徽','福建','江西','山东',
+        '河南','湖北','湖南',
+        '广东','广西','海南',
+        '重庆','四川','贵州','云南','西藏',
+        '陕西','甘肃','青海','宁夏','新疆',
+        '香港','澳门','台湾'
+    ];
+
+    // ==================== 动态届数：当前年份-2 到 当前年份+2 ====================
+    const CURRENT_YEAR = new Date().getFullYear();
+    const YEAR_RANGE = [];
+    for (let y = CURRENT_YEAR - 2; y <= CURRENT_YEAR + 2; y++) {
+        YEAR_RANGE.push(`${y}届`);
+    }
+
+    // ==================== 模拟数据（已拆分 status 和 registrationStatus） ====================
+    const mockData = [
+        {
+            id: 'act-001',
+            title: '"就"在南粤·"职"通未来——广东省高校联合2026届毕业生暨2027届实习生空中双选会',
+            targetAudience: 'regional',
+            region: ['广东'],
+            universities: ['中山大学','华南理工大学','暨南大学','深圳大学','华南师范大学','华南农业大学','广东工业大学','广东外语外贸大学','广州大学','南方科技大学','汕头大学','广东财经大学','广东海洋大学','南方医科大学','广州中医药大学','广州美术学院','广东医科大学','东莞理工学院','佛山科学技术学院','惠州学院','深圳技术大学','北京理工大学珠海学院','等41所高校'],
+            graduateYears: ['2026届','2027届'],
+            activityType: '空中双选会',
+            status: '进行中',
+            registrationStatus: '报名中',
+            format: 'online',
+            platform: '智联招聘',
+            location: null,
+            activityStartDate: '2026-06-01',
+            activityEndDate: '2026-07-31',
+            registrationDeadline: '2026-07-31',
+            enterpriseRegUrl: 'https://cct.zhaopin.com/jobfair/jobfairDetails/18691',
+            sourceLinks: [
+                { title: '暨南大学就业网-邀请函', url: 'https://scdc.jnu.edu.cn/jobfair/view/id/51827' },
+                { title: '深圳技术大学就业网-邀请函', url: 'https://jyzd.sztu.edu.cn/info/1013/1617.htm' },
+                { title: '北理工珠海学院-邀请函', url: 'https://job.bitzh.edu.cn/unijob/web/index/notice-detail?id=2740' }
+            ],
+            isVerified: true, createdAt: '2026-06-01'
+        },
+        {
+            id: 'act-002',
+            title: '华南理工大学2027届毕业生秋季综合类双选会',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['华南理工大学'],
+            graduateYears: ['2027届'],
+            activityType: '线下双选会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'offline',
+            platform: null,
+            location: '华南理工大学五山校区海丽文体中心',
+            activityStartDate: '2026-09-20',
+            activityEndDate: '2026-09-20',
+            registrationDeadline: '2026-09-10',
+            enterpriseRegUrl: 'https://career.scut.edu.cn/jobfair/12345',
+            sourceLinks: [{ title: '华南理工大学就业在线', url: 'https://career.scut.edu.cn/jobfair/view/id/12345' }],
+            isVerified: true, createdAt: '2026-07-15'
+        },
+        {
+            id: 'act-003',
+            title: '中山大学2027届毕业生秋季校园宣讲会——互联网专场',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['中山大学'],
+            graduateYears: ['2027届'],
+            activityType: '宣讲会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'offline',
+            platform: null,
+            location: '中山大学广州校区南校园',
+            activityStartDate: '2026-09-15',
+            activityEndDate: '2026-09-15',
+            registrationDeadline: '2026-09-01',
+            enterpriseRegUrl: 'https://career.sysu.edu.cn/jobfair/67890',
+            sourceLinks: [{ title: '中山大学学生就业指导中心', url: 'https://career.sysu.edu.cn/jobfair/view/id/67890' }],
+            isVerified: true, createdAt: '2026-07-18'
+        },
+        {
+            id: 'act-004',
+            title: '暨南大学2027届实习生专场网络招聘会',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['暨南大学'],
+            graduateYears: ['2027届'],
+            activityType: '网络招聘会',
+            status: '进行中',
+            registrationStatus: '报名中',
+            format: 'online',
+            platform: '智联招聘',
+            location: null,
+            activityStartDate: '2026-07-10',
+            activityEndDate: '2026-08-31',
+            registrationDeadline: '2026-08-15',
+            enterpriseRegUrl: 'https://www.zhaopin.com/jobfair/98765',
+            sourceLinks: [{ title: '暨南大学学生就业指导中心', url: 'https://scdc.jnu.edu.cn/jobfair/view/id/51828' }],
+            isVerified: false, createdAt: '2026-07-10'
+        },
+        {
+            id: 'act-005',
+            title: '深圳大学2027届毕业生夏季实习专招会',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['深圳大学'],
+            graduateYears: ['2027届'],
+            activityType: '实习专招会',
+            status: '进行中',
+            registrationStatus: '已截止',
+            format: 'offline',
+            platform: null,
+            location: '深圳大学粤海校区',
+            activityStartDate: '2026-07-20',
+            activityEndDate: '2026-07-20',
+            registrationDeadline: '2026-07-18',
+            enterpriseRegUrl: 'https://career.szu.edu.cn/jobfair/11111',
+            sourceLinks: [{ title: '深圳大学就业指导中心', url: 'https://career.szu.edu.cn/jobfair/view/id/11111' }],
+            isVerified: true, createdAt: '2026-07-08'
+        },
+        {
+            id: 'act-006',
+            title: '广东省2027届高校毕业生供需见面会——理工类专场',
+            targetAudience: 'regional',
+            region: ['广东'],
+            universities: ['广东工业大学','华南理工大学','广州大学','东莞理工学院','佛山科学技术学院','深圳技术大学'],
+            graduateYears: ['2027届'],
+            activityType: '供需见面会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'offline',
+            platform: null,
+            location: '广东工业大学大学城校区',
+            activityStartDate: '2026-10-15',
+            activityEndDate: '2026-10-15',
+            registrationDeadline: '2026-10-01',
+            enterpriseRegUrl: 'https://career.gdut.edu.cn/jobfair/22222',
+            sourceLinks: [{ title: '广东工业大学就业信息网', url: 'https://career.gdut.edu.cn/jobfair/view/id/22222' }],
+            isVerified: true, createdAt: '2026-07-19'
+        },
+        {
+            id: 'act-007',
+            title: '华南师范大学2027届毕业生教育类空中双选会',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['华南师范大学'],
+            graduateYears: ['2027届'],
+            activityType: '空中双选会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'online',
+            platform: '腾讯会议+学校就业平台',
+            location: null,
+            activityStartDate: '2026-08-01',
+            activityEndDate: '2026-08-15',
+            registrationDeadline: '2026-07-28',
+            enterpriseRegUrl: 'https://career.scnu.edu.cn/jobfair/33333',
+            sourceLinks: [{ title: '华南师范大学就业导航', url: 'https://career.scnu.edu.cn/jobfair/view/id/33333' }],
+            isVerified: true, createdAt: '2026-07-14'
+        },
+        {
+            id: 'act-008',
+            title: '广西大学2027届毕业生秋季双选会',
+            targetAudience: 'university',
+            region: ['广西'],
+            universities: ['广西大学'],
+            graduateYears: ['2027届'],
+            activityType: '线下双选会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'offline',
+            platform: null,
+            location: '广西大学西校园篮球场',
+            activityStartDate: '2026-10-20',
+            activityEndDate: '2026-10-20',
+            registrationDeadline: '2026-10-10',
+            enterpriseRegUrl: 'https://career.gxu.edu.cn/jobfair/44444',
+            sourceLinks: [{ title: '广西大学就业信息网', url: 'https://career.gxu.edu.cn/jobfair/view/id/44444' }],
+            isVerified: true, createdAt: '2026-07-17'
+        },
+        {
+            id: 'act-009',
+            title: '华中科技大学2027届毕业生IT类专场宣讲会',
+            targetAudience: 'university',
+            region: ['湖北'],
+            universities: ['华中科技大学'],
+            graduateYears: ['2027届'],
+            activityType: '宣讲会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'hybrid',
+            platform: '腾讯会议',
+            location: '华中科技大学大学生活动中心 + 线上同步',
+            activityStartDate: '2026-09-05',
+            activityEndDate: '2026-09-05',
+            registrationDeadline: '2026-08-25',
+            enterpriseRegUrl: 'https://career.hust.edu.cn/jobfair/55555',
+            sourceLinks: [{ title: '华中科技大学就业信息网', url: 'https://career.hust.edu.cn/jobfair/view/id/55555' }],
+            isVerified: false, createdAt: '2026-07-16'
+        },
+        {
+            id: 'act-010',
+            title: '湖南省高校联合2027届毕业生空中双选会',
+            targetAudience: 'regional',
+            region: ['湖南'],
+            universities: ['中南大学','湖南大学','湖南师范大学','湘潭大学','长沙理工大学'],
+            graduateYears: ['2027届'],
+            activityType: '空中双选会',
+            status: '进行中',
+            registrationStatus: '报名中',
+            format: 'online',
+            platform: '智联招聘',
+            location: null,
+            activityStartDate: '2026-07-01',
+            activityEndDate: '2026-08-31',
+            registrationDeadline: '2026-08-20',
+            enterpriseRegUrl: 'https://cct.zhaopin.com/jobfair/66666',
+            sourceLinks: [
+                { title: '中南大学就业信息网', url: 'https://career.csu.edu.cn/jobfair/view/id/66666' },
+                { title: '湖南大学招生与就业指导处', url: 'https://career.hnu.edu.cn/jobfair/view/id/66667' }
+            ],
+            isVerified: true, createdAt: '2026-07-01'
+        },
+        {
+            id: 'act-011',
+            title: '南方科技大学2027届毕业生前沿科技专场双选会',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['南方科技大学'],
+            graduateYears: ['2027届'],
+            activityType: '线下双选会',
+            status: '已结束',
+            registrationStatus: '已截止',
+            format: 'offline',
+            platform: null,
+            location: '南方科技大学会议中心',
+            activityStartDate: '2026-06-15',
+            activityEndDate: '2026-06-15',
+            registrationDeadline: '2026-06-01',
+            enterpriseRegUrl: 'https://career.sustech.edu.cn/jobfair/77777',
+            sourceLinks: [{ title: '南方科技大学就业信息网', url: 'https://career.sustech.edu.cn/jobfair/view/id/77777' }],
+            isVerified: true, createdAt: '2026-05-20'
+        },
+        {
+            id: 'act-012',
+            title: '北京理工大学珠海学院2027届毕业生综合双选会',
+            targetAudience: 'university',
+            region: ['广东'],
+            universities: ['北京理工大学珠海学院'],
+            graduateYears: ['2027届'],
+            activityType: '线下双选会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'offline',
+            platform: null,
+            location: '北京理工大学珠海学院体育馆',
+            activityStartDate: '2026-09-25',
+            activityEndDate: '2026-09-25',
+            registrationDeadline: '2026-09-15',
+            enterpriseRegUrl: 'https://job.bitzh.edu.cn/jobfair/88888',
+            sourceLinks: [{ title: '北理工珠海学院就业信息网', url: 'https://job.bitzh.edu.cn/jobfair/view/id/88888' }],
+            isVerified: true, createdAt: '2026-07-13'
+        },
+        // --- 跨省补充数据 ---
+        {
+            id: 'act-013',
+            title: '北京市2027届高校毕业生春季联合双选会',
+            targetAudience: 'regional',
+            region: ['北京'],
+            universities: ['清华大学','北京大学','中国人民大学','北京航空航天大学','北京理工大学','北京师范大学'],
+            graduateYears: ['2027届'],
+            activityType: '线下双选会',
+            status: '已结束',
+            registrationStatus: '已截止',
+            format: 'offline',
+            platform: null,
+            location: '北京大学生就业之家',
+            activityStartDate: '2026-04-10',
+            activityEndDate: '2026-04-10',
+            registrationDeadline: '2026-03-25',
+            enterpriseRegUrl: 'https://www.bjbys.net.cn/jobfair/99999',
+            sourceLinks: [{ title: '北京高校毕业生就业信息网', url: 'https://www.bjbys.net.cn/jobfair/view/id/99999' }],
+            isVerified: true, createdAt: '2026-03-01'
+        },
+        {
+            id: 'act-014',
+            title: '四川省高校联合2027届毕业生空中宣讲会——川渝专场',
+            targetAudience: 'regional',
+            region: ['四川','重庆'],
+            universities: ['四川大学','电子科技大学','西南交通大学','重庆大学','西南大学'],
+            graduateYears: ['2027届'],
+            activityType: '空中双选会',
+            status: '进行中',
+            registrationStatus: '报名中',
+            format: 'online',
+            platform: '腾讯会议',
+            location: null,
+            activityStartDate: '2026-07-15',
+            activityEndDate: '2026-08-31',
+            registrationDeadline: '2026-08-15',
+            enterpriseRegUrl: 'https://cct.zhaopin.com/jobfair/88888',
+            sourceLinks: [
+                { title: '四川大学就业指导中心', url: 'https://jy.scu.edu.cn/jobfair/view/id/88888' },
+                { title: '重庆大学毕业生就业信息网', url: 'https://www.job.cqu.edu.cn/jobfair/view/id/88889' }
+            ],
+            isVerified: true, createdAt: '2026-07-12'
+        },
+        {
+            id: 'act-015',
+            title: '浙江大学2027届毕业生秋季综合招聘会',
+            targetAudience: 'university',
+            region: ['浙江'],
+            universities: ['浙江大学'],
+            graduateYears: ['2027届'],
+            activityType: '线下双选会',
+            status: '预告',
+            registrationStatus: '报名中',
+            format: 'offline',
+            platform: null,
+            location: '浙江大学紫金港校区体育馆',
+            activityStartDate: '2026-10-25',
+            activityEndDate: '2026-10-25',
+            registrationDeadline: '2026-10-10',
+            enterpriseRegUrl: 'https://www.career.zju.edu.cn/jobfair/77777',
+            sourceLinks: [{ title: '浙江大学就业指导与服务中心', url: 'https://www.career.zju.edu.cn/jobfair/view/id/77777' }],
+            isVerified: true, createdAt: '2026-07-20'
+        }
+    ];
+
+    // ==================== 全局状态 ====================
+    let favorites = new Set();
+    let subscriptions = new Set();
+    let currentUser = null;          // { id, phone, wechat, name }
+    let smsTimers = {};              // 各表单验证码倒计时
+    const USERS_KEY = 'campus_recruit_users';
+    const SESSION_KEY = 'campus_recruit_session';
+
+    // ==================== 认证：localStorage 读写 ====================
+    function loadUsers() { try { return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; } catch { return {}; } }
+    function saveUsers(users) { localStorage.setItem(USERS_KEY, JSON.stringify(users)); }
+    function loadSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { return null; } }
+    function saveSession(user) { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); }
+    function clearSession() { localStorage.removeItem(SESSION_KEY); }
+
+    // ==================== 认证：弹窗开关 ====================
+    function openAuthModal() {
+        document.getElementById('authModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+        switchAuthTab('login');
+    }
+    function closeAuthModal() {
+        document.getElementById('authModal').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+    function closeAuthModalOutside(e) {
+        if (e.target === document.getElementById('authModal')) closeAuthModal();
+    }
+
+    // ==================== 认证：Tab 切换 ====================
+    function switchAuthTab(tab) {
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        if (tab === 'login') {
+            tabLogin.classList.add('active'); tabRegister.classList.remove('active');
+            loginForm.classList.remove('hidden'); registerForm.classList.add('hidden');
+        } else {
+            tabRegister.classList.add('active'); tabLogin.classList.remove('active');
+            registerForm.classList.remove('hidden'); loginForm.classList.add('hidden');
+        }
+    }
+
+    // ==================== 认证：发送验证码（模拟） ====================
+    function sendSms(formType) {
+        const phoneInput = document.getElementById(formType === 'login' ? 'loginPhone' : 'regPhone');
+        const smsBtn = document.getElementById(formType === 'login' ? 'loginSmsBtn' : 'regSmsBtn');
+        const phone = phoneInput.value.trim();
+        if (!/^1\d{10}$/.test(phone)) { showToast('请输入正确的11位手机号'); phoneInput.focus(); return; }
+        let sec = 60;
+        smsBtn.disabled = true;
+        smsBtn.textContent = `${sec}s 后重发`;
+        smsTimers[formType] = setInterval(() => {
+            sec--;
+            if (sec <= 0) {
+                clearInterval(smsTimers[formType]);
+                smsBtn.disabled = false;
+                smsBtn.textContent = '获取验证码';
+            } else {
+                smsBtn.textContent = `${sec}s 后重发`;
+            }
+        }, 1000);
+        showToast(`📱 验证码已发送至 ${phone}（演示：输入任意4位数字）`);
+    }
+
+    // ==================== 认证：登录 ====================
+    function handleLogin(e) {
+        e.preventDefault();
+        const phone = document.getElementById('loginPhone').value.trim();
+        const smsCode = document.getElementById('loginSmsCode').value.trim();
+        const wechat = document.getElementById('loginWechat').value.trim();
+        const wechatPwd = document.getElementById('loginWechatPwd').value.trim();
+        const users = loadUsers();
+        // 手机号+验证码
+        if (phone && smsCode) {
+            if (smsCode.length !== 4) { showToast('请输入4位验证码'); return; }
+            let user = Object.values(users).find(u => u.phone === phone);
+            if (!user) {
+                user = { id: 'u_' + Date.now(), phone, wechat: null, name: '手机用户' + phone.slice(-4) };
+                users[user.id] = user;
+                saveUsers(users);
+            }
+            doLogin(user);
+            return;
+        }
+        // 微信号+密码
+        if (wechat && wechatPwd) {
+            let user = Object.values(users).find(u => u.wechat === wechat);
+            if (!user) { showToast('该微信号未注册，请先注册'); return; }
+            if (user.password !== wechatPwd) { showToast('密码错误'); return; }
+            doLogin(user);
+            return;
+        }
+        showToast('请填写手机号+验证码 或 微信号+密码');
+    }
+
+    // ==================== 认证：注册 ====================
+    function handleRegister(e) {
+        e.preventDefault();
+        const phone = document.getElementById('regPhone').value.trim();
+        const smsCode = document.getElementById('regSmsCode').value.trim();
+        const wechat = document.getElementById('regWechat').value.trim();
+        const wechatPwd = document.getElementById('regWechatPwd').value.trim();
+        const wechatPwd2 = document.getElementById('regWechatPwd2').value.trim();
+        const users = loadUsers();
+        // 手机号+验证码
+        if (phone && smsCode) {
+            if (!/^1\d{10}$/.test(phone)) { showToast('请输入正确的11位手机号'); return; }
+            if (smsCode.length !== 4) { showToast('请输入4位验证码'); return; }
+            if (Object.values(users).some(u => u.phone === phone)) { showToast('该手机号已注册，请直接登录'); return; }
+            const user = { id: 'u_' + Date.now(), phone, wechat: null, name: '手机用户' + phone.slice(-4) };
+            users[user.id] = user;
+            saveUsers(users);
+            doLogin(user);
+            return;
+        }
+        // 微信号+密码
+        if (wechat && wechatPwd) {
+            if (Object.values(users).some(u => u.wechat === wechat)) { showToast('该微信号已注册，请直接登录'); return; }
+            if (wechatPwd.length < 6) { showToast('密码至少6位'); return; }
+            if (wechatPwd !== wechatPwd2) { showToast('两次密码不一致'); return; }
+            const user = { id: 'u_' + Date.now(), phone: null, wechat, name: wechat, password: wechatPwd };
+            users[user.id] = user;
+            saveUsers(users);
+            doLogin(user);
+            return;
+        }
+        showToast('请填写手机号+验证码 或 微信号+密码');
+    }
+
+    // ==================== 认证：执行登录 & UI更新 ====================
+    function doLogin(user) {
+        currentUser = user;
+        saveSession(user);
+        closeAuthModal();
+        updateUserUI();
+        showToast(`👋 欢迎回来，${user.name}`);
+    }
+    function logout() {
+        currentUser = null;
+        clearSession();
+        updateUserUI();
+        document.getElementById('userDropdown').classList.add('hidden');
+        showToast('已退出登录');
+    }
+    function updateUserUI() {
+        const btnLogin = document.getElementById('btnLogin');
+        const userMenu = document.getElementById('userMenu');
+        const userAvatar = document.getElementById('userAvatar');
+        const userNameEl = document.getElementById('userName');
+        const dropdownPhone = document.getElementById('dropdownPhone');
+        if (currentUser) {
+            btnLogin.classList.add('hidden');
+            userMenu.classList.remove('hidden');
+            userAvatar.textContent = (currentUser.name || 'U')[0].toUpperCase();
+            userNameEl.textContent = currentUser.name;
+            dropdownPhone.textContent = currentUser.phone || currentUser.wechat || '';
+        } else {
+            btnLogin.classList.remove('hidden');
+            userMenu.classList.add('hidden');
+        }
+    }
+    function toggleUserDropdown() {
+        document.getElementById('userDropdown').classList.toggle('hidden');
+    }
+    document.addEventListener('click', (e) => {
+        const menu = document.getElementById('userMenu');
+        const dropdown = document.getElementById('userDropdown');
+        if (menu && dropdown && !menu.contains(e.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // ==================== 初始化 ====================
+    function init() {
+        // 渲染省份标签
+        renderProvinceTags();
+        // 渲染届数标签
+        renderYearTags();
+
+        // 筛选面板折叠/展开
+        const filterToggle = document.getElementById('filterToggle');
+        const filterPanel = document.getElementById('filterPanel');
+        const filterChevron = document.getElementById('filterChevron');
+        let filterOpen = true;
+        filterToggle.addEventListener('click', () => {
+            filterOpen = !filterOpen;
+            filterPanel.classList.toggle('open', filterOpen);
+            filterChevron.style.transform = filterOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+        filterPanel.classList.add('open');
+        filterChevron.style.transform = 'rotate(180deg)';
+
+        // 标签选中事件
+        document.querySelectorAll('.tag-checkbox').forEach(cb => {
+            cb.addEventListener('change', updateFilterBadge);
+        });
+
+        document.getElementById('applyFilterBtn').addEventListener('click', applyFilters);
+        document.getElementById('resetFilterBtn').addEventListener('click', resetFilters);
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('sortSelect').addEventListener('change', applyFilters);
+
+        // 恢复登录态
+        const savedSession = loadSession();
+        if (savedSession) { currentUser = savedSession; }
+        updateUserUI();
+
+        applyFilters();
+    }
+
+    // ==================== 渲染省份标签 ====================
+    function renderProvinceTags() {
+        const container = document.getElementById('regionFilters');
+        container.innerHTML = ALL_PROVINCES.map(p => `
+            <label class="cursor-pointer">
+                <input type="checkbox" class="tag-checkbox hidden" data-filter="region" value="${p}">
+                <span class="tag-label inline-block w-full text-center px-2 py-1.5 text-xs rounded-md border border-gray-200 bg-white text-gray-600 hover:border-brand-300">${p}</span>
+            </label>
+        `).join('');
+    }
+
+    // ==================== 渲染届数标签 ====================
+    function renderYearTags() {
+        const container = document.getElementById('yearFilters');
+        const currentYearLabel = `${CURRENT_YEAR}届`;
+        container.innerHTML = YEAR_RANGE.map(y => {
+            const isCurrent = y === currentYearLabel ? ' checked' : '';
+            return `
+                <label class="cursor-pointer">
+                    <input type="checkbox" class="tag-checkbox hidden" data-filter="year" value="${y}"${isCurrent}>
+                    <span class="tag-label inline-block px-4 py-1.5 text-xs rounded-full border border-gray-200 bg-white text-gray-600 hover:border-brand-300">${y}</span>
+                </label>
+            `;
+        }).join('');
+    }
+
+    // ==================== 筛选计数徽章 ====================
+    function updateFilterBadge() {
+        const checked = document.querySelectorAll('.tag-checkbox:checked').length;
+        const badge = document.getElementById('filterBadge');
+        if (checked > 0) {
+            badge.textContent = checked;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    // ==================== 获取选中的筛选项 ====================
+    function getSelectedFilters() {
+        const getChecked = (key) =>
+            Array.from(document.querySelectorAll(`.tag-checkbox[data-filter="${key}"]:checked`)).map(cb => cb.value);
+
+        return {
+            regions: getChecked('region'),
+            years: getChecked('year'),
+            formats: getChecked('format'),
+            subTypes: getChecked('subType'),
+            statuses: getChecked('status'),
+            regStatuses: getChecked('regStatus'),
+            keyword: document.getElementById('searchInput').value.trim().toLowerCase(),
+            sort: document.getElementById('sortSelect').value
+        };
+    }
+
+    // ==================== 从活动类型推导细分类型 ====================
+    // 将具体活动类型映射到5种标准细分类型
+    function getSubType(activityType) {
+        if (activityType.includes('双选会')) return '双选会';
+        if (activityType.includes('宣讲会')) return '宣讲会';
+        if (activityType.includes('供需见面会')) return '供需见面会';
+        if (activityType.includes('网络招聘会')) return '网络招聘会';
+        if (activityType.includes('实习专招会')) return '实习专招会';
+        return activityType; // 兜底：直接返回原值
+    }
+
+    // ==================== 从 format 推导活动形式中文 ====================
+    function getFormatCN(format) {
+        if (format === 'online') return '线上';
+        if (format === 'offline') return '线下';
+        return '其他'; // hybrid → 其他
+    }
+
+    // ==================== 筛选逻辑 ====================
+    function applyFilters() {
+        const { regions, years, formats, subTypes, statuses, regStatuses, keyword, sort } = getSelectedFilters();
+
+        let results = mockData.filter(activity => {
+            // 区域筛选
+            if (regions.length > 0 && !activity.region.some(r => regions.includes(r))) return false;
+            // 届数筛选
+            if (years.length > 0 && !activity.graduateYears.some(y => years.includes(y))) return false;
+            // 活动形式筛选（线上/线下/其他）
+            if (formats.length > 0 && !formats.includes(getFormatCN(activity.format))) return false;
+            // 细分类型筛选（双选会/宣讲会/其他）
+            if (subTypes.length > 0 && !subTypes.includes(getSubType(activity.activityType))) return false;
+            // 活动状态筛选（预告/进行中/已结束）
+            if (statuses.length > 0 && !statuses.includes(activity.status)) return false;
+            // 报名状态筛选（报名中/已截止）—— 独立分栏
+            if (regStatuses.length > 0 && !regStatuses.includes(activity.registrationStatus)) return false;
+            // 关键词搜索
+            if (keyword) {
+                const haystack = [
+                    activity.title,
+                    ...activity.universities,
+                    ...activity.region,
+                    activity.activityType,
+                    activity.status,
+                    activity.platform || '',
+                    activity.location || ''
+                ].join(' ').toLowerCase();
+                if (!haystack.includes(keyword)) return false;
+            }
+            return true;
+        });
+
+        // 排序
+        if (sort === 'deadline') {
+            results.sort((a, b) => new Date(a.registrationDeadline) - new Date(b.registrationDeadline));
+        } else if (sort === 'date') {
+            results.sort((a, b) => new Date(a.activityStartDate) - new Date(b.activityStartDate));
+        } else if (sort === 'newest') {
+            results.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
+
+        renderResults(results);
+    }
+
+    // ==================== 渲染结果列表 ====================
+    function renderResults(results) {
+        const container = document.getElementById('activityList');
+        const emptyState = document.getElementById('emptyState');
+        const loadMore = document.getElementById('loadMore');
+        const countEl = document.getElementById('resultCount');
+
+        countEl.textContent = results.length;
+
+        if (results.length === 0) {
+            container.innerHTML = '';
+            emptyState.classList.remove('hidden');
+            loadMore.classList.add('hidden');
+            return;
+        }
+
+        emptyState.classList.add('hidden');
+        loadMore.classList.remove('hidden');
+        container.innerHTML = results.map(activity => renderCard(activity)).join('');
+    }
+
+    // ==================== 卡片渲染 ====================
+    function renderCard(a) {
+        const statusConfig = {
+            '预告':    { cls: 'bg-blue-50 text-blue-700 border-blue-200',   icon: 'fa-clock',         label: '预告' },
+            '进行中':  { cls: 'bg-yellow-50 text-yellow-700 border-yellow-200', icon: 'fa-play',      label: '进行中' },
+            '已结束':  { cls: 'bg-gray-50 text-gray-500 border-gray-200',   icon: 'fa-circle-xmark',  label: '已结束' }
+        };
+        const sc = statusConfig[a.status] || statusConfig['预告'];
+
+        const regStatusConfig = {
+            '报名中': { cls: 'bg-green-50 text-green-700 border-green-200', icon: 'fa-circle-check' },
+            '已截止': { cls: 'bg-red-50 text-red-500 border-red-200',       icon: 'fa-circle-xmark' }
+        };
+        const rsc = regStatusConfig[a.registrationStatus] || regStatusConfig['已截止'];
+
+        const audienceLabel = { 'regional': '区域级别', 'university': '特定高校', 'national': '全国范围' };
+        const formatLabel   = { 'online': '线上', 'offline': '线下', 'hybrid': '线上+线下' };
+        const formatIcon    = { 'online': 'fa-globe', 'offline': 'fa-location-dot', 'hybrid': 'fa-globe' };
+
+        // 截止倒计时
+        const daysLeft = Math.ceil((new Date(a.registrationDeadline) - new Date()) / (1000 * 60 * 60 * 24));
+        let deadlineBadge = '';
+        if (a.registrationStatus === '报名中' && daysLeft <= 3 && daysLeft > 0) {
+            deadlineBadge = `<span class="ml-2 px-1.5 py-0.5 bg-red-50 text-red-600 text-xs rounded font-medium">⚠️ 仅剩${daysLeft}天</span>`;
+        }
+
+        const isFav = favorites.has(a.id);
+        const isSub = subscriptions.has(a.id);
+
+        return `
+        <div class="bg-white rounded-xl card-shadow p-5 transition hover:-translate-y-0.5">
+            <!-- 顶部标签行：活动状态 + 报名状态 + 面向群体 + 活动形式 -->
+            <div class="flex items-center gap-2 mb-3 flex-wrap">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full border ${sc.cls}">
+                    <i class="fa-solid ${sc.icon}"></i> ${sc.label}
+                </span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full border ${rsc.cls}">
+                    <i class="fa-solid ${rsc.icon}"></i> ${a.registrationStatus}
+                </span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-full">
+                    ${audienceLabel[a.targetAudience] || '区域级别'}
+                </span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-full">
+                    <i class="fa-solid ${formatIcon[a.format]}"></i> ${formatLabel[a.format]}
+                </span>
+                ${!a.isVerified ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-orange-50 text-orange-600 rounded-full border border-orange-200">⚠️ 信息待补全</span>' : ''}
+                ${deadlineBadge}
+            </div>
+
+            <!-- 标题 -->
+            <h3 class="text-base font-semibold text-gray-900 leading-snug mb-3">
+                <i class="fa-solid fa-bullhorn text-brand-500 mr-1.5 text-sm"></i>${a.title}
+            </h3>
+
+            <!-- 关键信息两列 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                <div class="flex items-start gap-2">
+                    <i class="fa-regular fa-calendar text-gray-400 mt-0.5 shrink-0"></i>
+                    <span class="text-gray-600">
+                        活动时间：<span class="text-gray-800">${a.activityStartDate}</span>${a.activityEndDate !== a.activityStartDate ? ` – <span class="text-gray-800">${a.activityEndDate}</span>` : ''}
+                    </span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid fa-building-columns text-gray-400 mt-0.5 shrink-0"></i>
+                    <span class="text-gray-600">
+                        覆盖高校：<span class="text-gray-800">${a.universities.slice(0, 4).join('、')}${a.universities.length > 4 ? `等${a.universities.length}所` : ''}</span>
+                    </span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid fa-user-graduate text-gray-400 mt-0.5 shrink-0"></i>
+                    <span class="text-gray-600">
+                        面向届数：<span class="text-gray-800">${a.graduateYears.join('、')}</span>
+                    </span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid ${a.format === 'online' ? 'fa-globe' : 'fa-location-dot'} text-gray-400 mt-0.5 shrink-0"></i>
+                    <span class="text-gray-600">
+                        ${a.format === 'online' ? `平台：<span class="text-gray-800">${a.platform}</span>` :
+                          a.format === 'offline' ? `地点：<span class="text-gray-800">${a.location}</span>` :
+                          `<span class="text-gray-800">${a.location} / ${a.platform}</span>`}
+                    </span>
+                </div>
+            </div>
+
+            <hr class="my-3 border-gray-100">
+
+            <!-- 报名信息 -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-brand-500"></i>
+                    <span class="text-gray-600">
+                        企业报名截止：<span class="font-semibold text-gray-900">${a.registrationDeadline}</span>
+                    </span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="${a.enterpriseRegUrl}" target="_blank"
+                       class="inline-flex items-center gap-1 px-3 py-1.5 bg-brand-600 text-white text-xs rounded-lg hover:bg-brand-700 transition font-medium ${a.registrationStatus === '已截止' ? 'opacity-40 pointer-events-none' : ''}">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> ${a.registrationStatus === '已截止' ? '已截止' : '企业报名'}
+                    </a>
+                </div>
+            </div>
+
+            <!-- 源链接 -->
+            ${a.sourceLinks.length > 0 ? `
+            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                ${a.sourceLinks.map(sl => `
+                    <a href="${sl.url}" target="_blank" class="inline-flex items-center gap-1 text-gray-400 hover:text-brand-600 transition">
+                        <i class="fa-solid fa-link"></i> ${sl.title}
+                    </a>
+                `).join('')}
+            </div>` : ''}
+
+            <!-- 底部操作 -->
+            <div class="mt-3 flex items-center gap-3 pt-2 border-t border-gray-50">
+                <button onclick="toggleFavorite('${a.id}')"
+                        class="flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition ${isFav ? 'text-yellow-500 bg-yellow-50' : 'text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'}">
+                    <i class="fa-${isFav ? 'solid' : 'regular'} fa-star"></i> ${isFav ? '已收藏' : '收藏'}
+                </button>
+                <button onclick="toggleSubscribe('${a.id}')"
+                        class="flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition ${isSub ? 'text-brand-600 bg-brand-50' : 'text-gray-400 hover:text-brand-600 hover:bg-brand-50'}">
+                    <i class="fa-${isSub ? 'solid' : 'regular'} fa-bell"></i> ${isSub ? '已关注' : '关注此高校'}
+                </button>
+            </div>
+        </div>`;
+    }
+
+    // ==================== 收藏 / 订阅 ====================
+    function toggleFavorite(id) {
+        if (favorites.has(id)) { favorites.delete(id); showToast('已取消收藏'); }
+        else { favorites.add(id); showToast('⭐ 已添加到收藏夹'); }
+        applyFilters();
+    }
+    function toggleSubscribe(id) {
+        if (subscriptions.has(id)) { subscriptions.delete(id); showToast('已取消关注'); }
+        else { subscriptions.add(id); showToast('🔔 已关注此高校，有新活动将通知您'); }
+        applyFilters();
+    }
+
+    // ==================== 重置 ====================
+    function resetFilters() {
+        document.querySelectorAll('.tag-checkbox').forEach(cb => { cb.checked = false; });
+        // 重置届数默认选中当前年份
+        const currentYearLabel = `${CURRENT_YEAR}届`;
+        document.querySelectorAll('.tag-checkbox[data-filter="year"]').forEach(cb => {
+            if (cb.value === currentYearLabel) cb.checked = true;
+        });
+        document.getElementById('searchInput').value = '';
+        document.getElementById('sortSelect').value = 'deadline';
+        updateFilterBadge();
+        applyFilters();
+        showToast('筛选条件已重置');
+    }
+
+    // ==================== Toast ====================
+    let toastTimer;
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
