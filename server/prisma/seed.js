@@ -1,0 +1,50 @@
+const { PrismaClient } = require('@prisma/client');
+const { v4: uuid } = require('uuid');
+const bcrypt = require('bcryptjs');
+
+const prisma = new PrismaClient();
+
+async function main() {
+  console.log('🌱 开始导入种子数据...');
+
+  // 创建管理员
+  const adminPwd = await bcrypt.hash('admin123', 10);
+  await prisma.user.upsert({
+    where: { phone: '13800000000' },
+    update: {},
+    create: {
+      id: 'admin-001',
+      phone: '13800000000',
+      nickname: '管理员',
+      role: 'admin',
+      passwordHash: adminPwd,
+    },
+  });
+  console.log('  ✅ 管理员账号: 13800000000 / admin123');
+
+  const activities = [
+    { id:'act-001',title:'"就"在南粤·"职"通未来——广东省高校联合2026届毕业生暨2027届实习生空中双选会',targetAudience:'regional',region:JSON.stringify(['广东']),universities:JSON.stringify(['中山大学','华南理工大学','暨南大学','深圳大学','华南师范大学','华南农业大学','广东工业大学','广东外语外贸大学','广州大学','南方科技大学','汕头大学','广东财经大学','广东海洋大学','南方医科大学','广州中医药大学','广州美术学院','广东医科大学','东莞理工学院','佛山科学技术学院','惠州学院','深圳技术大学','北京理工大学珠海学院','等41所高校']),graduateYears:JSON.stringify(['2026届','2027届']),activityType:'空中双选会',format:'online',platform:'智联招聘',status:'ongoing',registrationStatus:'open',activityStartDate:'2026-06-01',activityEndDate:'2026-07-31',registrationDeadline:'2026-07-31',enterpriseRegUrl:'https://cct.zhaopin.com/jobfair/jobfairDetails/18691',sourceLinks:JSON.stringify([{title:'暨南大学就业网-邀请函',url:'https://scdc.jnu.edu.cn/jobfair/view/id/51827'},{title:'深圳技术大学就业网-邀请函',url:'https://jyzd.sztu.edu.cn/info/1013/1617.htm'},{title:'北理工珠海学院-邀请函',url:'https://job.bitzh.edu.cn/unijob/web/index/notice-detail?id=2740'}]),isVerified:1 },
+    { id:'act-002',title:'华南理工大学2027届毕业生秋季综合类双选会',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['华南理工大学']),graduateYears:JSON.stringify(['2027届']),activityType:'线下双选会',format:'offline',location:'华南理工大学五山校区海丽文体中心',status:'preview',registrationStatus:'open',activityStartDate:'2026-09-20',activityEndDate:'2026-09-20',registrationDeadline:'2026-09-10',enterpriseRegUrl:'https://career.scut.edu.cn/jobfair/12345',sourceLinks:JSON.stringify([{title:'华南理工大学就业在线',url:'https://career.scut.edu.cn/jobfair/view/id/12345'}]),isVerified:1 },
+    { id:'act-003',title:'中山大学2027届毕业生秋季校园宣讲会——互联网专场',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['中山大学']),graduateYears:JSON.stringify(['2027届']),activityType:'宣讲会',format:'offline',location:'中山大学广州校区南校园',status:'preview',registrationStatus:'open',activityStartDate:'2026-09-15',activityEndDate:'2026-09-15',registrationDeadline:'2026-09-01',enterpriseRegUrl:'https://career.sysu.edu.cn/jobfair/67890',sourceLinks:JSON.stringify([{title:'中山大学学生就业指导中心',url:'https://career.sysu.edu.cn/jobfair/view/id/67890'}]),isVerified:1 },
+    { id:'act-004',title:'暨南大学2027届实习生专场网络招聘会',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['暨南大学']),graduateYears:JSON.stringify(['2027届']),activityType:'网络招聘会',format:'online',platform:'智联招聘',status:'ongoing',registrationStatus:'open',activityStartDate:'2026-07-10',activityEndDate:'2026-08-31',registrationDeadline:'2026-08-15',enterpriseRegUrl:'https://www.zhaopin.com/jobfair/98765',sourceLinks:JSON.stringify([{title:'暨南大学学生就业指导中心',url:'https://scdc.jnu.edu.cn/jobfair/view/id/51828'}]),isVerified:0 },
+    { id:'act-005',title:'深圳大学2027届毕业生夏季实习专招会',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['深圳大学']),graduateYears:JSON.stringify(['2027届']),activityType:'实习专招会',format:'offline',location:'深圳大学粤海校区',status:'ongoing',registrationStatus:'closed',activityStartDate:'2026-07-20',activityEndDate:'2026-07-20',registrationDeadline:'2026-07-18',enterpriseRegUrl:'https://career.szu.edu.cn/jobfair/11111',sourceLinks:JSON.stringify([{title:'深圳大学就业指导中心',url:'https://career.szu.edu.cn/jobfair/view/id/11111'}]),isVerified:1 },
+    { id:'act-006',title:'广东省2027届高校毕业生供需见面会——理工类专场',targetAudience:'regional',region:JSON.stringify(['广东']),universities:JSON.stringify(['广东工业大学','华南理工大学','广州大学','东莞理工学院','佛山科学技术学院','深圳技术大学']),graduateYears:JSON.stringify(['2027届']),activityType:'供需见面会',format:'offline',location:'广东工业大学大学城校区',status:'preview',registrationStatus:'open',activityStartDate:'2026-10-15',activityEndDate:'2026-10-15',registrationDeadline:'2026-10-01',enterpriseRegUrl:'https://career.gdut.edu.cn/jobfair/22222',sourceLinks:JSON.stringify([{title:'广东工业大学就业信息网',url:'https://career.gdut.edu.cn/jobfair/view/id/22222'}]),isVerified:1 },
+    { id:'act-007',title:'华南师范大学2027届毕业生教育类空中双选会',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['华南师范大学']),graduateYears:JSON.stringify(['2027届']),activityType:'空中双选会',format:'online',platform:'腾讯会议+学校就业平台',status:'preview',registrationStatus:'open',activityStartDate:'2026-08-01',activityEndDate:'2026-08-15',registrationDeadline:'2026-07-28',enterpriseRegUrl:'https://career.scnu.edu.cn/jobfair/33333',sourceLinks:JSON.stringify([{title:'华南师范大学就业导航',url:'https://career.scnu.edu.cn/jobfair/view/id/33333'}]),isVerified:1 },
+    { id:'act-008',title:'广西大学2027届毕业生秋季双选会',targetAudience:'university',region:JSON.stringify(['广西']),universities:JSON.stringify(['广西大学']),graduateYears:JSON.stringify(['2027届']),activityType:'线下双选会',format:'offline',location:'广西大学西校园篮球场',status:'preview',registrationStatus:'open',activityStartDate:'2026-10-20',activityEndDate:'2026-10-20',registrationDeadline:'2026-10-10',enterpriseRegUrl:'https://career.gxu.edu.cn/jobfair/44444',sourceLinks:JSON.stringify([{title:'广西大学就业信息网',url:'https://career.gxu.edu.cn/jobfair/view/id/44444'}]),isVerified:1 },
+    { id:'act-009',title:'华中科技大学2027届毕业生IT类专场宣讲会',targetAudience:'university',region:JSON.stringify(['湖北']),universities:JSON.stringify(['华中科技大学']),graduateYears:JSON.stringify(['2027届']),activityType:'宣讲会',format:'hybrid',platform:'腾讯会议',location:'华中科技大学大学生活动中心 + 线上同步',status:'preview',registrationStatus:'open',activityStartDate:'2026-09-05',activityEndDate:'2026-09-05',registrationDeadline:'2026-08-25',enterpriseRegUrl:'https://career.hust.edu.cn/jobfair/55555',sourceLinks:JSON.stringify([{title:'华中科技大学就业信息网',url:'https://career.hust.edu.cn/jobfair/view/id/55555'}]),isVerified:0 },
+    { id:'act-010',title:'湖南省高校联合2027届毕业生空中双选会',targetAudience:'regional',region:JSON.stringify(['湖南']),universities:JSON.stringify(['中南大学','湖南大学','湖南师范大学','湘潭大学','长沙理工大学']),graduateYears:JSON.stringify(['2027届']),activityType:'空中双选会',format:'online',platform:'智联招聘',status:'ongoing',registrationStatus:'open',activityStartDate:'2026-07-01',activityEndDate:'2026-08-31',registrationDeadline:'2026-08-20',enterpriseRegUrl:'https://cct.zhaopin.com/jobfair/66666',sourceLinks:JSON.stringify([{title:'中南大学就业信息网',url:'https://career.csu.edu.cn/jobfair/view/id/66666'},{title:'湖南大学招生与就业指导处',url:'https://career.hnu.edu.cn/jobfair/view/id/66667'}]),isVerified:1 },
+    { id:'act-011',title:'南方科技大学2027届毕业生前沿科技专场双选会',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['南方科技大学']),graduateYears:JSON.stringify(['2027届']),activityType:'线下双选会',format:'offline',location:'南方科技大学会议中心',status:'ended',registrationStatus:'closed',activityStartDate:'2026-06-15',activityEndDate:'2026-06-15',registrationDeadline:'2026-06-01',enterpriseRegUrl:'https://career.sustech.edu.cn/jobfair/77777',sourceLinks:JSON.stringify([{title:'南方科技大学就业信息网',url:'https://career.sustech.edu.cn/jobfair/view/id/77777'}]),isVerified:1 },
+    { id:'act-012',title:'北京理工大学珠海学院2027届毕业生综合双选会',targetAudience:'university',region:JSON.stringify(['广东']),universities:JSON.stringify(['北京理工大学珠海学院']),graduateYears:JSON.stringify(['2027届']),activityType:'线下双选会',format:'offline',location:'北京理工大学珠海学院体育馆',status:'preview',registrationStatus:'open',activityStartDate:'2026-09-25',activityEndDate:'2026-09-25',registrationDeadline:'2026-09-15',enterpriseRegUrl:'https://job.bitzh.edu.cn/jobfair/88888',sourceLinks:JSON.stringify([{title:'北理工珠海学院就业信息网',url:'https://job.bitzh.edu.cn/jobfair/view/id/88888'}]),isVerified:1 },
+    { id:'act-013',title:'四川省高校联合2027届毕业生空中双选会——川渝专场',targetAudience:'regional',region:JSON.stringify(['四川','重庆']),universities:JSON.stringify(['四川大学','电子科技大学','西南交通大学','重庆大学','西南大学']),graduateYears:JSON.stringify(['2027届']),activityType:'空中双选会',format:'online',platform:'腾讯会议',status:'ongoing',registrationStatus:'open',activityStartDate:'2026-07-15',activityEndDate:'2026-08-31',registrationDeadline:'2026-08-15',enterpriseRegUrl:'https://cct.zhaopin.com/jobfair/88888',sourceLinks:JSON.stringify([{title:'四川大学就业指导中心',url:'https://jy.scu.edu.cn/jobfair/view/id/88888'},{title:'重庆大学毕业生就业信息网',url:'https://www.job.cqu.edu.cn/jobfair/view/id/88889'}]),isVerified:1 },
+    { id:'act-014',title:'浙江大学2027届毕业生秋季综合招聘会',targetAudience:'university',region:JSON.stringify(['浙江']),universities:JSON.stringify(['浙江大学']),graduateYears:JSON.stringify(['2027届']),activityType:'线下双选会',format:'offline',location:'浙江大学紫金港校区体育馆',status:'preview',registrationStatus:'open',activityStartDate:'2026-10-25',activityEndDate:'2026-10-25',registrationDeadline:'2026-10-10',enterpriseRegUrl:'https://www.career.zju.edu.cn/jobfair/77777',sourceLinks:JSON.stringify([{title:'浙江大学就业指导与服务中心',url:'https://www.career.zju.edu.cn/jobfair/view/id/77777'}]),isVerified:1 },
+    { id:'act-015',title:'北京市2027届高校毕业生春季联合双选会',targetAudience:'regional',region:JSON.stringify(['北京']),universities:JSON.stringify(['清华大学','北京大学','中国人民大学','北京航空航天大学','北京理工大学','北京师范大学']),graduateYears:JSON.stringify(['2027届']),activityType:'线下双选会',format:'offline',location:'北京大学生就业之家',status:'ended',registrationStatus:'closed',activityStartDate:'2026-04-10',activityEndDate:'2026-04-10',registrationDeadline:'2026-03-25',enterpriseRegUrl:'https://www.bjbys.net.cn/jobfair/99999',sourceLinks:JSON.stringify([{title:'北京高校毕业生就业信息网',url:'https://www.bjbys.net.cn/jobfair/view/id/99999'}]),isVerified:1 },
+  ];
+
+  for (const a of activities) {
+    await prisma.activity.upsert({ where: { id: a.id }, update: {}, create: a });
+  }
+  console.log(`  ✅ ${activities.length} 条招聘活动数据导入完成`);
+  console.log('🎉 种子数据导入完成！\n');
+}
+
+main().catch(e => { console.error(e); process.exit(1); }).finally(() => prisma.$disconnect());

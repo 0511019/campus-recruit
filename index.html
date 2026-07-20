@@ -302,46 +302,16 @@
 
             <!-- ====== 登录表单 ====== -->
             <form id="loginForm" class="space-y-4" onsubmit="handleLogin(event)">
-                <!-- 手机号登录 -->
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">手机号</label>
-                    <div class="flex gap-2">
-                        <input id="loginPhone" type="tel" maxlength="11" placeholder="请输入11位手机号"
-                               class="flex-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">验证码</label>
-                    <div class="flex gap-2">
-                        <input id="loginSmsCode" type="text" maxlength="4" placeholder="4位验证码"
-                               class="flex-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
-                        <button type="button" id="loginSmsBtn" onclick="sendSms('login')"
-                                class="sms-btn px-4 py-2.5 bg-gray-100 text-gray-600 text-xs rounded-lg hover:bg-gray-200 transition font-medium shrink-0">
-                            获取验证码
-                        </button>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-1">演示环境：任意4位数字即可登录</p>
-                </div>
-
-                <!-- 分隔线 -->
-                <div class="flex items-center gap-3">
-                    <hr class="flex-1 border-gray-100">
-                    <span class="text-xs text-gray-400">或用微信号登录</span>
-                    <hr class="flex-1 border-gray-100">
-                </div>
-
-                <!-- 微信号登录 -->
-                <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">微信号</label>
-                    <input id="loginWechat" type="text" placeholder="请输入微信号"
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">账号</label>
+                    <input id="loginUsername" type="text" placeholder="请输入账号"
                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-500 mb-1 font-medium">密码</label>
-                    <input id="loginWechatPwd" type="password" placeholder="请输入密码"
+                    <input id="loginPassword" type="password" placeholder="请输入密码"
                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
                 </div>
-
                 <button type="submit" class="w-full py-2.5 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition font-medium">
                     登录
                 </button>
@@ -349,49 +319,26 @@
 
             <!-- ====== 注册表单 ====== -->
             <form id="registerForm" class="space-y-4 hidden" onsubmit="handleRegister(event)">
-                <!-- 手机号注册 -->
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">手机号</label>
-                    <input id="regPhone" type="tel" maxlength="11" placeholder="请输入11位手机号"
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">账号</label>
+                    <input id="regUsername" type="text" placeholder="请设置登录账号"
                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">验证码</label>
-                    <div class="flex gap-2">
-                        <input id="regSmsCode" type="text" maxlength="4" placeholder="4位验证码"
-                               class="flex-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
-                        <button type="button" id="regSmsBtn" onclick="sendSms('register')"
-                                class="sms-btn px-4 py-2.5 bg-gray-100 text-gray-600 text-xs rounded-lg hover:bg-gray-200 transition font-medium shrink-0">
-                            获取验证码
-                        </button>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-1">演示环境：任意4位数字即可注册</p>
-                </div>
-
-                <!-- 分隔线 -->
-                <div class="flex items-center gap-3">
-                    <hr class="flex-1 border-gray-100">
-                    <span class="text-xs text-gray-400">或用微信号注册</span>
-                    <hr class="flex-1 border-gray-100">
-                </div>
-
-                <!-- 微信号注册 -->
-                <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">微信号</label>
-                    <input id="regWechat" type="text" placeholder="请输入微信号"
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">昵称（选填）</label>
+                    <input id="regNickname" type="text" placeholder="给自己起个名字"
                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1 font-medium">设置密码</label>
-                    <input id="regWechatPwd" type="password" placeholder="6-16位密码"
+                    <label class="block text-xs text-gray-500 mb-1 font-medium">密码</label>
+                    <input id="regPassword" type="password" placeholder="至少6位密码"
                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-500 mb-1 font-medium">确认密码</label>
-                    <input id="regWechatPwd2" type="password" placeholder="再次输入密码"
+                    <input id="regPassword2" type="password" placeholder="再次输入密码"
                            class="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-100">
                 </div>
-
                 <button type="submit" class="w-full py-2.5 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 transition font-medium">
                     注册
                 </button>
@@ -421,8 +368,28 @@
         YEAR_RANGE.push(`${y}届`);
     }
 
-    // ==================== 模拟数据（已拆分 status 和 registrationStatus） ====================
-    const mockData = [
+    // ==================== 数据加载 ====================
+    let activityData = [];
+    async function loadData() {
+        try {
+            const res = await fetch('data.json');
+            activityData = await res.json();
+        } catch (e) {
+            console.error('数据加载失败:', e);
+            activityData = [];
+        }
+    }
+
+    // ==================== 本地用户管理 ====================
+    function getUsers() { try { return JSON.parse(localStorage.getItem('campus_users')) || {}; } catch { return {}; } }
+    function saveUsers(users) { localStorage.setItem('campus_users', JSON.stringify(users)); }
+    function getSession() { try { return JSON.parse(localStorage.getItem('campus_session')); } catch { return null; } }
+    function saveSession(user) { localStorage.setItem('campus_session', JSON.stringify(user)); }
+    function getLocalFavorites() { try { return JSON.parse(localStorage.getItem('campus_favs')) || []; } catch { return []; } }
+    function saveLocalFavorites(arr) { localStorage.setItem('campus_favs', JSON.stringify(arr)); }
+
+    // ==================== 旧数据（已废弃） ====================
+    const ___unused = [
         {
             id: 'act-001',
             title: '"就"在南粤·"职"通未来——广东省高校联合2026届毕业生暨2027届实习生空中双选会',
@@ -780,12 +747,15 @@
         }
     }
 
-    // ==================== 认证：发送验证码（模拟） ====================
-    function sendSms(formType) {
+    // ==================== 认证：发送验证码（真实API） ====================
+    async function sendSms(formType) {
         const phoneInput = document.getElementById(formType === 'login' ? 'loginPhone' : 'regPhone');
         const smsBtn = document.getElementById(formType === 'login' ? 'loginSmsBtn' : 'regSmsBtn');
         const phone = phoneInput.value.trim();
         if (!/^1\d{10}$/.test(phone)) { showToast('请输入正确的11位手机号'); phoneInput.focus(); return; }
+        try {
+            await apiPost('/api/v1/auth/send-sms', { phone, type: formType === 'login' ? 'login' : 'register' });
+        } catch (e) { showToast(e.message); return; }
         let sec = 60;
         smsBtn.disabled = true;
         smsBtn.textContent = `${sec}s 后重发`;
@@ -799,87 +769,59 @@
                 smsBtn.textContent = `${sec}s 后重发`;
             }
         }, 1000);
-        showToast(`📱 验证码已发送至 ${phone}（演示：输入任意4位数字）`);
+        showToast(`📱 验证码已发送至 ${phone}（后端模拟，查看控制台获取验证码）`);
     }
 
     // ==================== 认证：登录 ====================
     function handleLogin(e) {
         e.preventDefault();
-        const phone = document.getElementById('loginPhone').value.trim();
-        const smsCode = document.getElementById('loginSmsCode').value.trim();
-        const wechat = document.getElementById('loginWechat').value.trim();
-        const wechatPwd = document.getElementById('loginWechatPwd').value.trim();
-        const users = loadUsers();
-        // 手机号+验证码
-        if (phone && smsCode) {
-            if (smsCode.length !== 4) { showToast('请输入4位验证码'); return; }
-            let user = Object.values(users).find(u => u.phone === phone);
-            if (!user) {
-                user = { id: 'u_' + Date.now(), phone, wechat: null, name: '手机用户' + phone.slice(-4) };
-                users[user.id] = user;
-                saveUsers(users);
-            }
-            doLogin(user);
-            return;
-        }
-        // 微信号+密码
-        if (wechat && wechatPwd) {
-            let user = Object.values(users).find(u => u.wechat === wechat);
-            if (!user) { showToast('该微信号未注册，请先注册'); return; }
-            if (user.password !== wechatPwd) { showToast('密码错误'); return; }
-            doLogin(user);
-            return;
-        }
-        showToast('请填写手机号+验证码 或 微信号+密码');
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        if (!username || !password) { showToast('请填写账号和密码'); return; }
+        const users = getUsers();
+        const user = Object.values(users).find(u => u.username === username);
+        if (!user) { showToast('账号不存在'); return; }
+        if (user.password !== password) { showToast('密码错误'); return; }
+        doLogin(user);
     }
 
     // ==================== 认证：注册 ====================
     function handleRegister(e) {
         e.preventDefault();
-        const phone = document.getElementById('regPhone').value.trim();
-        const smsCode = document.getElementById('regSmsCode').value.trim();
-        const wechat = document.getElementById('regWechat').value.trim();
-        const wechatPwd = document.getElementById('regWechatPwd').value.trim();
-        const wechatPwd2 = document.getElementById('regWechatPwd2').value.trim();
-        const users = loadUsers();
-        // 手机号+验证码
-        if (phone && smsCode) {
-            if (!/^1\d{10}$/.test(phone)) { showToast('请输入正确的11位手机号'); return; }
-            if (smsCode.length !== 4) { showToast('请输入4位验证码'); return; }
-            if (Object.values(users).some(u => u.phone === phone)) { showToast('该手机号已注册，请直接登录'); return; }
-            const user = { id: 'u_' + Date.now(), phone, wechat: null, name: '手机用户' + phone.slice(-4) };
-            users[user.id] = user;
-            saveUsers(users);
-            doLogin(user);
-            return;
-        }
-        // 微信号+密码
-        if (wechat && wechatPwd) {
-            if (Object.values(users).some(u => u.wechat === wechat)) { showToast('该微信号已注册，请直接登录'); return; }
-            if (wechatPwd.length < 6) { showToast('密码至少6位'); return; }
-            if (wechatPwd !== wechatPwd2) { showToast('两次密码不一致'); return; }
-            const user = { id: 'u_' + Date.now(), phone: null, wechat, name: wechat, password: wechatPwd };
-            users[user.id] = user;
-            saveUsers(users);
-            doLogin(user);
-            return;
-        }
-        showToast('请填写手机号+验证码 或 微信号+密码');
+        const username = document.getElementById('regUsername').value.trim();
+        const nickname = document.getElementById('regNickname').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        const password2 = document.getElementById('regPassword2').value.trim();
+        if (!username || !password) { showToast('请填写账号和密码'); return; }
+        if (password.length < 6) { showToast('密码至少6位'); return; }
+        if (password !== password2) { showToast('两次密码不一致'); return; }
+        const users = getUsers();
+        if (Object.values(users).some(u => u.username === username)) { showToast('该账号已存在'); return; }
+        const id = 'u_' + Date.now();
+        const user = { id, username, nickname: nickname || username, password, createdAt: new Date().toISOString() };
+        users[id] = user;
+        saveUsers(users);
+        doLogin(user);
     }
 
     // ==================== 认证：执行登录 & UI更新 ====================
     function doLogin(user) {
         currentUser = user;
         saveSession(user);
+        const savedFavs = getLocalFavorites();
+        savedFavs.forEach(id => favorites.add(id));
         closeAuthModal();
         updateUserUI();
-        showToast(`👋 欢迎回来，${user.name}`);
+        applyFilters();
+        showToast(`👋 欢迎回来，${user.nickname || user.username}`);
     }
     function logout() {
         currentUser = null;
-        clearSession();
+        favorites.clear();
+        localStorage.removeItem('campus_session');
         updateUserUI();
         document.getElementById('userDropdown').classList.add('hidden');
+        applyFilters();
         showToast('已退出登录');
     }
     function updateUserUI() {
@@ -891,9 +833,10 @@
         if (currentUser) {
             btnLogin.classList.add('hidden');
             userMenu.classList.remove('hidden');
-            userAvatar.textContent = (currentUser.name || 'U')[0].toUpperCase();
-            userNameEl.textContent = currentUser.name;
-            dropdownPhone.textContent = currentUser.phone || currentUser.wechat || '';
+            const displayName = currentUser.nickname || currentUser.username || 'U';
+            userAvatar.textContent = displayName[0].toUpperCase();
+            userNameEl.textContent = displayName;
+            dropdownPhone.textContent = currentUser.username || '';
         } else {
             btnLogin.classList.remove('hidden');
             userMenu.classList.add('hidden');
@@ -911,7 +854,7 @@
     });
 
     // ==================== 初始化 ====================
-    function init() {
+    async function init() {
         // 渲染省份标签
         renderProvinceTags();
         // 渲染届数标签
@@ -941,10 +884,16 @@
         document.getElementById('sortSelect').addEventListener('change', applyFilters);
 
         // 恢复登录态
-        const savedSession = loadSession();
-        if (savedSession) { currentUser = savedSession; }
+        const session = getSession();
+        if (session) currentUser = session;
         updateUserUI();
 
+        // 恢复收藏
+        const savedFavs = getLocalFavorites();
+        savedFavs.forEach(id => favorites.add(id));
+
+        // 加载数据
+        await loadData();
         applyFilters();
     }
 
@@ -1025,44 +974,22 @@
     function applyFilters() {
         const { regions, years, formats, subTypes, statuses, regStatuses, keyword, sort } = getSelectedFilters();
 
-        let results = mockData.filter(activity => {
-            // 区域筛选
+        let results = activityData.filter(activity => {
             if (regions.length > 0 && !activity.region.some(r => regions.includes(r))) return false;
-            // 届数筛选
             if (years.length > 0 && !activity.graduateYears.some(y => years.includes(y))) return false;
-            // 活动形式筛选（线上/线下/其他）
             if (formats.length > 0 && !formats.includes(getFormatCN(activity.format))) return false;
-            // 细分类型筛选（双选会/宣讲会/其他）
             if (subTypes.length > 0 && !subTypes.includes(getSubType(activity.activityType))) return false;
-            // 活动状态筛选（预告/进行中/已结束）
             if (statuses.length > 0 && !statuses.includes(activity.status)) return false;
-            // 报名状态筛选（报名中/已截止）—— 独立分栏
             if (regStatuses.length > 0 && !regStatuses.includes(activity.registrationStatus)) return false;
-            // 关键词搜索
             if (keyword) {
-                const haystack = [
-                    activity.title,
-                    ...activity.universities,
-                    ...activity.region,
-                    activity.activityType,
-                    activity.status,
-                    activity.platform || '',
-                    activity.location || ''
-                ].join(' ').toLowerCase();
+                const haystack = [activity.title, ...activity.universities, ...activity.region, activity.activityType, activity.platform || '', activity.location || ''].join(' ').toLowerCase();
                 if (!haystack.includes(keyword)) return false;
             }
             return true;
         });
-
-        // 排序
-        if (sort === 'deadline') {
-            results.sort((a, b) => new Date(a.registrationDeadline) - new Date(b.registrationDeadline));
-        } else if (sort === 'date') {
-            results.sort((a, b) => new Date(a.activityStartDate) - new Date(b.activityStartDate));
-        } else if (sort === 'newest') {
-            results.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        }
-
+        if (sort === 'deadline') results.sort((a, b) => new Date(a.registrationDeadline) - new Date(b.registrationDeadline));
+        else if (sort === 'date') results.sort((a, b) => new Date(a.activityStartDate) - new Date(b.activityStartDate));
+        else if (sort === 'newest') results.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         renderResults(results);
     }
 
@@ -1215,11 +1142,19 @@
 
     // ==================== 收藏 / 订阅 ====================
     function toggleFavorite(id) {
-        if (favorites.has(id)) { favorites.delete(id); showToast('已取消收藏'); }
-        else { favorites.add(id); showToast('⭐ 已添加到收藏夹'); }
+        if (!currentUser) { showToast('请先登录'); return; }
+        if (favorites.has(id)) {
+            favorites.delete(id);
+            showToast('已取消收藏');
+        } else {
+            favorites.add(id);
+            showToast('⭐ 已添加到收藏夹');
+        }
+        saveLocalFavorites([...favorites]);
         applyFilters();
     }
     function toggleSubscribe(id) {
+        if (!currentUser) { showToast('请先登录'); return; }
         if (subscriptions.has(id)) { subscriptions.delete(id); showToast('已取消关注'); }
         else { subscriptions.add(id); showToast('🔔 已关注此高校，有新活动将通知您'); }
         applyFilters();
