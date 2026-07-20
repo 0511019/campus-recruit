@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校招瞭望台 - 后台管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+        <span class="font-bold text-lg">⚙️ 数据管理后台</span>
+        <div class="flex gap-2 text-sm">
+            <a href="../index.html" class="px-3 py-1.5 rounded-lg hover:bg-gray-100">← 返回前台</a>
+            <button onclick="downloadJSON()" class="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                📥 下载 data.json
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-6">
+    <!-- 统计 -->
+    <div class="grid grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl p-4 text-center card-shadow">
+            <div class="text-2xl font-bold text-brand-600" id="statTotal">0</div>
+            <div class="text-xs text-gray-500 mt-1">总活动</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 text-center card-shadow">
+            <div class="text-2xl font-bold text-green-600" id="statOngoing">0</div>
+            <div class="text-xs text-gray-500 mt-1">进行中</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 text-center card-shadow">
+            <div class="text-2xl font-bold text-blue-600" id="statPreview">0</div>
+            <div class="text-xs text-gray-500 mt-1">预告</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 text-center card-shadow">
+            <div class="text-2xl font-bold text-gray-400" id="statEnded">0</div>
+            <div class="text-xs text-gray-500 mt-1">已结束</div>
+        </div>
+    </div>
+
+    <!-- 添加活动 -->
+    <div class="bg-white rounded-xl card-shadow p-5 mb-6">
+        <h2 class="font-semibold text-lg mb-4" id="formTitle">➕ 新增招聘活动</h2>
+        <form id="activityForm" onsubmit="saveActivity(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input type="hidden" id="editId">
+            <div class="md:col-span-3">
+                <label class="block text-xs text-gray-500 mb-1">活动标题 *</label>
+                <input id="fTitle" required placeholder="例如：广东省高校联合2027届毕业生空中双选会"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">区域（省）*</label>
+                <input id="fRegion" required placeholder="广东" value="广东"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">面向届数 *</label>
+                <input id="fYears" required placeholder="2027届" value="2027届"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">活动类型 *</label>
+                <select id="fType" class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                    <option>线下双选会</option><option>空中双选会</option><option>宣讲会</option>
+                    <option>供需见面会</option><option>网络招聘会</option><option>实习专招会</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">活动形式 *</label>
+                <select id="fFormat" class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                    <option value="offline">线下</option><option value="online">线上</option><option value="hybrid">线上+线下</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">覆盖高校（逗号分隔）</label>
+                <input id="fUniversities" placeholder="中山大学,华南理工大学,暨南大学"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">线上平台 / 线下地点</label>
+                <input id="fPlatform" placeholder="智联招聘 / 体育馆"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">活动开始日期 *</label>
+                <input id="fStartDate" type="date" required class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">活动结束日期</label>
+                <input id="fEndDate" type="date" class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">报名截止日期 *</label>
+                <input id="fDeadline" type="date" required class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-xs text-gray-500 mb-1">企业报名链接 *</label>
+                <input id="fRegUrl" required placeholder="https://cct.zhaopin.com/jobfair/..."
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">来源标题</label>
+                <input id="fSourceTitle" placeholder="暨南大学就业网-邀请函"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="md:col-span-3">
+                <label class="block text-xs text-gray-500 mb-1">来源链接</label>
+                <input id="fSourceUrl" placeholder="https://scdc.jnu.edu.cn/jobfair/view/id/51827"
+                       class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="md:col-span-3 flex gap-3">
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                    保存活动
+                </button>
+                <button type="button" onclick="cancelEdit()" id="btnCancel" class="px-6 py-2 border rounded-lg text-sm hover:bg-gray-50 hidden">
+                    取消编辑
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 活动列表 -->
+    <div class="bg-white rounded-xl card-shadow overflow-hidden">
+        <div class="px-5 py-3 border-b flex justify-between items-center">
+            <span class="font-semibold text-sm">活动列表</span>
+            <span class="text-xs text-gray-400" id="listCount">0条</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 text-xs">
+                    <tr>
+                        <th class="px-4 py-2 text-left">标题</th>
+                        <th class="px-4 py-2 text-left w-20">类型</th>
+                        <th class="px-4 py-2 text-left w-20">状态</th>
+                        <th class="px-4 py-2 text-left w-28">截止日期</th>
+                        <th class="px-4 py-2 text-left w-24">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="activityTable"></tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+let activities = [];
+let nextId = 100;
+
+// 加载数据
+fetch('../data.json?' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+        activities = data;
+        render();
+    })
+    .catch(() => {
+        activities = [];
+        render();
+    });
+
+function render() {
+    document.getElementById('statTotal').textContent = activities.length;
+    document.getElementById('statOngoing').textContent = activities.filter(a => a.status === 'ongoing' || a.status === '进行中').length;
+    document.getElementById('statPreview').textContent = activities.filter(a => a.status === 'preview' || a.status === '预告').length;
+    document.getElementById('statEnded').textContent = activities.filter(a => a.status === 'ended' || a.status === '已结束').length;
+    document.getElementById('listCount').textContent = activities.length + '条';
+
+    let html = '';
+    activities.forEach((a, i) => {
+        const statusMap = { 'preview': '预告', 'ongoing': '进行中', 'ended': '已结束', '预告': '预告', '进行中': '进行中', '已结束': '已结束' };
+        const statusCls = { '预告': 'bg-blue-50 text-blue-700', '进行中': 'bg-yellow-50 text-yellow-700', '已结束': 'bg-gray-50 text-gray-500' };
+        html += `<tr class="border-t hover:bg-gray-50">
+            <td class="px-4 py-2 max-w-xs truncate" title="${esc(a.title)}">${esc(a.title)}</td>
+            <td class="px-4 py-2 text-xs text-gray-500">${a.activityType}</td>
+            <td class="px-4 py-2"><span class="px-2 py-0.5 rounded text-xs ${statusCls[statusMap[a.status]] || ''}">${statusMap[a.status] || a.status}</span></td>
+            <td class="px-4 py-2 text-xs text-gray-500">${a.registrationDeadline}</td>
+            <td class="px-4 py-2">
+                <button onclick="editActivity(${i})" class="text-blue-600 hover:underline text-xs mr-2">编辑</button>
+                <button onclick="deleteActivity(${i})" class="text-red-500 hover:underline text-xs">删除</button>
+            </td>
+        </tr>`;
+    });
+    document.getElementById('activityTable').innerHTML = html || '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-400">暂无活动数据</td></tr>';
+}
+
+function esc(s) { return s.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function saveActivity(e) {
+    e.preventDefault();
+    const id = document.getElementById('editId').value;
+    const activity = {
+        id: id || ('manual-' + (nextId++)),
+        title: document.getElementById('fTitle').value.trim(),
+        targetAudience: document.getElementById('fUniversities').value.includes(',') ? 'regional' : 'university',
+        region: document.getElementById('fRegion').value.split(',').map(s => s.trim()).filter(Boolean),
+        universities: document.getElementById('fUniversities').value.split(',').map(s => s.trim()).filter(Boolean),
+        graduateYears: document.getElementById('fYears').value.split(',').map(s => s.trim()).filter(Boolean),
+        activityType: document.getElementById('fType').value,
+        format: document.getElementById('fFormat').value,
+        platform: document.getElementById('fFormat').value !== 'offline' ? document.getElementById('fPlatform').value : null,
+        location: document.getElementById('fFormat').value !== 'online' ? document.getElementById('fPlatform').value : null,
+        status: 'preview',
+        registrationStatus: 'open',
+        activityStartDate: document.getElementById('fStartDate').value,
+        activityEndDate: document.getElementById('fEndDate').value || document.getElementById('fStartDate').value,
+        registrationDeadline: document.getElementById('fDeadline').value,
+        enterpriseRegUrl: document.getElementById('fRegUrl').value,
+        enterpriseRegMethod: '线上报名',
+        sourceLinks: [],
+        isVerified: true,
+        createdAt: new Date().toISOString().slice(0, 10),
+    };
+    const srcTitle = document.getElementById('fSourceTitle').value.trim();
+    const srcUrl = document.getElementById('fSourceUrl').value.trim();
+    if (srcTitle && srcUrl) activity.sourceLinks.push({ title: srcTitle, url: srcUrl });
+
+    if (id) {
+        const idx = activities.findIndex(a => a.id === id);
+        if (idx >= 0) activities[idx] = activity;
+    } else {
+        activities.push(activity);
+    }
+    cancelEdit();
+    render();
+    alert('已保存！请点击"下载 data.json"并替换项目中的文件。');
+}
+
+function editActivity(i) {
+    const a = activities[i];
+    document.getElementById('formTitle').textContent = '✏️ 编辑活动';
+    document.getElementById('editId').value = a.id;
+    document.getElementById('fTitle').value = a.title;
+    document.getElementById('fRegion').value = (a.region || []).join(',');
+    document.getElementById('fYears').value = (a.graduateYears || []).join(',');
+    document.getElementById('fType').value = a.activityType;
+    document.getElementById('fFormat').value = a.format;
+    document.getElementById('fUniversities').value = (a.universities || []).join(',');
+    document.getElementById('fPlatform').value = a.platform || a.location || '';
+    document.getElementById('fStartDate').value = a.activityStartDate;
+    document.getElementById('fEndDate').value = a.activityEndDate || '';
+    document.getElementById('fDeadline').value = a.registrationDeadline;
+    document.getElementById('fRegUrl').value = a.enterpriseRegUrl || '';
+    document.getElementById('fSourceTitle').value = (a.sourceLinks || [])[0]?.title || '';
+    document.getElementById('fSourceUrl').value = (a.sourceLinks || [])[0]?.url || '';
+    document.getElementById('btnCancel').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEdit() {
+    document.getElementById('formTitle').textContent = '➕ 新增招聘活动';
+    document.getElementById('editId').value = '';
+    document.getElementById('activityForm').reset();
+    document.getElementById('btnCancel').classList.add('hidden');
+}
+
+function deleteActivity(i) {
+    if (!confirm('确认删除"' + activities[i].title.slice(0, 50) + '"?')) return;
+    activities.splice(i, 1);
+    render();
+}
+
+function downloadJSON() {
+    const blob = new Blob([JSON.stringify(activities, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'data.json';
+    a.click();
+}
+</script>
+</body>
+</html>

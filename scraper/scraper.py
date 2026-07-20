@@ -127,18 +127,18 @@ def fetch_page(url, max_retries=2):
             resp.encoding = resp.apparent_encoding or 'utf-8'
             return resp.text
         except Exception as e:
-            print(f'  ⚠️ 请求失败 (尝试 {attempt+1}/{max_retries}): {e}')
+            print(f'  [警告] 请求失败 (尝试 {attempt+1}/{max_retries}): {e}')
             time.sleep(3)
     return None
 
 def scrape_source(source):
     """爬取单个高校数据源"""
     activities = []
-    print(f'\n📡 爬取 {source["name"]}...')
+    print(f'\n[爬取] 爬取 {source["name"]}...')
 
     html = fetch_page(source['list_url'])
     if not html:
-        print(f'  ❌ 无法访问 {source["list_url"]}')
+        print(f'  [失败] 无法访问 {source["list_url"]}')
         return activities
 
     soup = BeautifulSoup(html, 'lxml')
@@ -286,18 +286,20 @@ def scrape_source(source):
                 'createdAt': datetime.now().strftime('%Y-%m-%d'),
             }
             activities.append(activity)
-            print(f'  ✅ {title[:60]}...')
+            print(f'  [成功] {title[:60]}...')
 
         except Exception as e:
-            print(f'  ⚠️ 解析失败: {e}')
+            print(f'  [警告] 解析失败: {e}')
             continue
 
     return activities
 
 
 def main():
+    import sys, io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     print('=' * 60)
-    print(f'🔍 校招瞭望台 - 爬虫启动 {datetime.now().strftime("%Y-%m-%d %H:%M")}')
+    print(f'[校招瞭望台] 爬虫启动 {datetime.now().strftime("%Y-%m-%d %H:%M")}')
     print('=' * 60)
 
     all_activities = []
@@ -308,7 +310,7 @@ def main():
             all_activities.extend(acts)
             time.sleep(REQUEST_DELAY)
         except Exception as e:
-            print(f'  ❌ {source["name"]} 爬取失败: {e}')
+            print(f'  [失败] {source["name"]} 爬取失败: {e}')
 
     # 去重（按标题相似度）
     seen_titles = set()
@@ -322,11 +324,11 @@ def main():
     # 按日期排序
     unique.sort(key=lambda a: a.get('activityStartDate', ''))
 
-    print(f'\n📊 共爬取 {len(unique)} 条有效活动 (原始 {len(all_activities)} 条)')
+    print(f'\n[统计] 共爬取 {len(unique)} 条有效活动 (原始 {len(all_activities)} 条)')
 
     # 如果爬取数据太少，保留原有数据
     if len(unique) < 5:
-        print('⚠️ 爬取数据不足，保留现有数据')
+        print('[警告] 爬取数据不足，保留现有数据')
         return
 
     # 输出到 data.json
@@ -334,8 +336,8 @@ def main():
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(unique, f, ensure_ascii=False, indent=2)
 
-    print(f'💾 已保存到 {output_path}')
-    print(f'🏁 爬虫完成！')
+    print(f'[保存] 已保存到 {output_path}')
+    print(f'[完成] 爬虫完成！')
 
 
 if __name__ == '__main__':
