@@ -7,8 +7,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -31,7 +31,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-67ead36e1000",
@@ -41,8 +41,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -65,7 +65,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-38632ced4dd5",
@@ -75,8 +75,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -99,7 +99,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-3e86f14f67ca",
@@ -109,8 +109,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -133,7 +133,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-75c7592250d8",
@@ -143,8 +143,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届",
@@ -168,7 +168,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-307c0563d39b",
@@ -187,7 +187,7 @@
     "activityType": "网络招聘会",
     "format": "hybrid",
     "platform": "",
-    "location": "网络招聘会，在线投递简历 主办单位：中山大学党委学生工作部 2026届毕业生就业暨2027届暑期实习线上招聘会 13个 参会企业 350个 招聘人数 40个 可投职位 9405个 关注人次 学生报名参",
+    "location": "网络招聘会，在线投递简历 主办单位：中山大学党委学生工作部 2026届毕业生就业暨2027届暑期实习线上招聘会 13个 参会企业 350个 招聘人数 40个 可投职位 9793个 关注人次 学生报名参",
     "status": "ongoing",
     "registrationStatus": "open",
     "activityStartDate": "2026-06-22",
@@ -202,7 +202,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-40aebd0acc48",
@@ -236,7 +236,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-900d82eb2ccc",
@@ -269,7 +269,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   },
   {
     "id": "auto-ee17b4b20acd",
@@ -302,6 +302,6 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-07-21"
+    "createdAt": "2026-07-22"
   }
 ]
