@@ -31,7 +31,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-67ead36e1000",
@@ -65,7 +65,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-38632ced4dd5",
@@ -99,7 +99,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-3e86f14f67ca",
@@ -133,7 +133,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-75c7592250d8",
@@ -168,7 +168,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-307c0563d39b",
@@ -187,9 +187,9 @@
     "activityType": "网络招聘会",
     "format": "hybrid",
     "platform": "",
-    "location": "网络招聘会，在线投递简历 主办单位：中山大学党委学生工作部 2026届毕业生就业暨2027届暑期实习线上招聘会 22个 参会企业 610个 招聘人数 61个 可投职位 15969个 关注人次 学生报名",
-    "status": "ongoing",
-    "registrationStatus": "open",
+    "location": "网络招聘会，在线投递简历 主办单位：中山大学党委学生工作部 2026届毕业生就业暨2027届暑期实习线上招聘会 22个 参会企业 610个 招聘人数 61个 可投职位 16008个 关注人次 浏览次数",
+    "status": "ended",
+    "registrationStatus": "closed",
     "activityStartDate": "2026-06-22",
     "activityEndDate": "2026-09-10",
     "registrationDeadline": "2026-09-10",
@@ -202,7 +202,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-40aebd0acc48",
@@ -236,7 +236,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-900d82eb2ccc",
@@ -269,7 +269,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   },
   {
     "id": "auto-ee17b4b20acd",
@@ -302,6 +302,6 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-10"
+    "createdAt": "2026-09-11"
   }
 ]
