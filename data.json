@@ -7,8 +7,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -31,7 +31,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-24"
+    "createdAt": "2026-09-25"
   },
   {
     "id": "auto-67ead36e1000",
@@ -41,8 +41,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -65,7 +65,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-24"
+    "createdAt": "2026-09-25"
   },
   {
     "id": "auto-38632ced4dd5",
@@ -75,8 +75,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -99,7 +99,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-24"
+    "createdAt": "2026-09-25"
   },
   {
     "id": "auto-3e86f14f67ca",
@@ -109,8 +109,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届"
@@ -133,7 +133,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-24"
+    "createdAt": "2026-09-25"
   },
   {
     "id": "auto-75c7592250d8",
@@ -143,8 +143,8 @@
       "广东"
     ],
     "universities": [
-      "广州大学",
-      "广东工业大学"
+      "广东工业大学",
+      "广州大学"
     ],
     "graduateYears": [
       "2026届",
@@ -168,7 +168,7 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-24"
+    "createdAt": "2026-09-25"
   },
   {
     "id": "auto-307c0563d39b",
@@ -202,6 +202,106 @@
       }
     ],
     "isVerified": true,
-    "createdAt": "2026-09-24"
+    "createdAt": "2026-09-25"
+  },
+  {
+    "id": "auto-40aebd0acc48",
+    "title": "【邀请函】“就”在南粤，“职”通未来  广东省高校联合2026届毕业生暨2027届实习生空中双选会",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "暨南大学"
+    ],
+    "graduateYears": [
+      "2026届",
+      "2027届"
+    ],
+    "activityType": "空中双选会",
+    "format": "hybrid",
+    "platform": "",
+    "location": "网络招聘会，在线投递简历 详情 暨大就业 暨南大学学生就业指导中心 暨南大学学生就业指导中心",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-06-05",
+    "activityEndDate": "2026-07-31",
+    "registrationDeadline": "2026-07-31",
+    "enterpriseRegUrl": "https://scdc.jnu.edu.cn/jobfair/view/id/51827",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "暨南大学就业网-详情",
+        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51827"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-09-25"
+  },
+  {
+    "id": "auto-900d82eb2ccc",
+    "title": "“逐梦湾区・职通山海”暨南大学2026届毕业生春季（综合类）校园双选会——番禺校区专场",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "暨南大学"
+    ],
+    "graduateYears": [
+      "2026届"
+    ],
+    "activityType": "宣讲会",
+    "format": "offline",
+    "platform": null,
+    "location": "暨南大学番禺校区T1、T2宿舍楼架空层 详情 暨大就业 暨南大学学生就业指导中心 暨南大学学生就业指导中心",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-03-11",
+    "activityEndDate": "2026-03-13",
+    "registrationDeadline": "2026-03-13",
+    "enterpriseRegUrl": "https://scdc.jnu.edu.cn/jobfair/view/id/51812",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "暨南大学就业网-详情",
+        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51812"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-09-25"
+  },
+  {
+    "id": "auto-ee17b4b20acd",
+    "title": "逐梦湾区·职通山海——暨南大学2026年春季校园双选会（番禺校区）理工、药学、化材、经管、语言类专场第二场",
+    "targetAudience": "university",
+    "region": [
+      "广东"
+    ],
+    "universities": [
+      "暨南大学"
+    ],
+    "graduateYears": [
+      "2026届"
+    ],
+    "activityType": "宣讲会",
+    "format": "offline",
+    "platform": null,
+    "location": "暨南大学番禺校区T2架空层 详情 暨大就业 暨南大学学生就业指导中心 暨南大学学生就业指导中心",
+    "status": "ended",
+    "registrationStatus": "closed",
+    "activityStartDate": "2026-04-21",
+    "activityEndDate": "2026-04-23",
+    "registrationDeadline": "2026-04-23",
+    "enterpriseRegUrl": "https://scdc.jnu.edu.cn/jobfair/view/id/51820",
+    "enterpriseRegMethod": "线上报名",
+    "sourceLinks": [
+      {
+        "title": "暨南大学就业网-详情",
+        "url": "https://scdc.jnu.edu.cn/jobfair/view/id/51820"
+      }
+    ],
+    "isVerified": true,
+    "createdAt": "2026-09-25"
   }
 ]
